@@ -1,0 +1,32 @@
+<!-- listening_history.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listening History</title>
+</head>
+<body>
+    <h1>Listening History</h1>
+    <button id="fetch-history">Fetch Listening History</button>
+
+    <div id="listening-history-data">
+        <!-- Display the listening history data here -->
+    </div>
+
+    <script>
+        document.getElementById('fetch-history').addEventListener('click', function() {
+            // Send an AJAX request to retrieve listening history
+            fetch('/get-listening-history/')
+                .then(response => response.json())
+                .then(data => {
+                    // Display the listening history data on the page
+                    const listeningHistoryData = document.getElementById('listening-history-data');
+                    listeningHistoryData.innerHTML = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

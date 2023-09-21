@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+</head>
+<body>
+    <h1>Welcome to the Homepage</h1>
+    <p>This is your homepage. You can navigate to different sections of the website using the buttons below:</p>
+
+    <!-- Button to go to the Spotify authentication page -->
+    <a href="{% url 'spotify-auth' %}" class="btn btn-primary">Authenticate with Spotify</a>
+
+    <!-- Button to go to the user's profile page -->
+    <a href="{% url 'spotify-profile' %}" class="btn btn-success">My Spotify Profile</a>
+
+    <!-- Button to view listening history -->
+    <a href="{% url 'get_listening_history' %}" class="btn btn-info">Listening History</a>
+
+    <!-- Add more buttons as needed for your application -->
+
+    <p>Feel free to customize this homepage further to fit your needs.</p>
+</body>
+</html>

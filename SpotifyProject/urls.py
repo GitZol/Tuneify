@@ -19,16 +19,19 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from tuneify import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', views.register, name='register'),
-    path('get-listening-history/', views.get_listening_history, name='get_listening_history'),
-    path('spotify-auth/', views.spotify_auth, name='spotify-auth'),
-    path('spotify-callback/', views.spotify_callback, name='spotify_callback'),
-    path('spotify-profile/', views.spotify_profile, name='spotify-profile'),
-    path('listening-history/', views.get_listening_history, name='listening_history'),
+    path('get_listening_history/', views.get_listening_history, name='get_listening_history'),
+    path('spotify_auth/', views.spotify_auth, name='spotify_auth'),
+    path('spotify_callback/', views.spotify_callback, name='spotify_callback'),
+    path('listening_history/', views.get_listening_history, name='listening_history'),
     path('', views.home, name='home'),
+    path('spotify_profile/', views.spotify_profile, name='spotify_profile'),
+    path('get_user_similarity_scores/', views.get_user_similarity_score, name='get_user_similarity_scores'),
+    path('check_similarity/', views.check_similarity, name='check_similarity'),
+    path('profile/', views.profile_view, name='profile'),
 ]
 
 if settings.DEBUG:

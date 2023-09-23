@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Similarity Results</title>
+</head>
+<body>
+    <h1>Similarity Results</h1>
+    {% if similarity_scores %}
+    <ul>
+        {% for score in similarity_scores %}
+            <li>User: {{ score.user2.display_name }}, Score: {{ score.score }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No similarity scores available.</p>
+    {% endif %}
+</body>
+</html>

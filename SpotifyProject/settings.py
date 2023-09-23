@@ -82,6 +82,9 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -117,18 +120,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = 'login'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SPOTIPY_CLIENT_ID = 'c9341baf78624ba987043a8966bb724b'
 SPOTIPY_CLIENT_SECRET = '9feb6c5393374b0d9bea14dc391ecccb'
-SPOTIPY_REDIRECT_URL = 'http://localhost:8080/spotify-callback/' #update with actual url
+SPOTIPY_REDIRECT_URL = 'http://localhost:8080/spotify_callback/' #update with actual url

@@ -3,9 +3,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     display_name = models.CharField(max_length=255)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    spotify_id = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.display_name
 
 class ListeningHistory(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

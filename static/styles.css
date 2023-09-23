@@ -1,0 +1,36 @@
+/* Style the container for the listening history */
+#listening-history-data {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the list of items */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Style each item in the list */
+li {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+/* Style links within the items */
+li a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Style links on hover */
+li a:hover {
+    text-decoration: underline;
+}

@@ -19,5 +19,13 @@
     <!-- Add more buttons as needed for your application -->
 
     <p>Feel free to customize this homepage further to fit your needs.</p>
+
+    <h2>Recently Played Tracks</h2>
+    <ul>
+        {% for track in recently_played_tracks %}
+            <li>{{ track.track.name }} by {{ track.track.artists.0.name }}</li>
+        {% endfor %}
+    </ul>
+
 </body>
 </html>

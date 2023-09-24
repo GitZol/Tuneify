@@ -43,12 +43,15 @@ def spotify_profile(request):
         sp = spotipy.Spotify(auth=access_token)
         current_user = sp.current_user()
         display_name = current_user['display_name']
+        recently_played_tracks = sp.current_user_recently_played(limit=10)
+
+        print("Listening History in profile view:", recently_played_tracks)
 
     except SpotifyException as e:
         messages.error(request, f'Spotify API error: {e}')
         return redirect('home')
     
-    return render(request, 'spotify/profile.html', {'display_name': display_name})
+    return render(request, 'spotify/profile.html', {'display_name': display_name, 'recently_played_tracks': recently_played_tracks})
 
 
 def spotify_authroize(request):
@@ -80,11 +83,14 @@ def spotify_callback(request):
     if response.status_code == 200:
         token_data = response.json()
         access_token = token_data['access_token']
+        request.session['spotify_access_token'] = access_token
+        messages.success(request, 'Successfully authenticated with Spotify.')
 
         return redirect('home')
     
     else:
-        return redirect('error_page')
+        messages.error(request, 'Failed to authenticated with Spotofy. Please try again later.')
+        return redirect('home')
     
 
 def profile_view(request):
@@ -139,13 +145,15 @@ def get_listening_history(request):
         # handle the case where there is no access token
         return JsonResponse({'error': 'User is not authenticated.'}, status=401)
     
-    #initialise spotify client
-    sp = spotipy.Spotify(auth=access_token)
 
     try:
+        #initialise spotify client
+        sp = spotipy.Spotify(auth=access_token)
         # Retrieve user's listening history
-        listening_history = sp.current_user_recently_played(limit=50)
+        listening_history = sp.current_user_recently_played(limit=10)
 
+        request.session['listening_history'] = listening_history
+        print("After API call: Listening History =", listening_history)
     except spotipy.SpotifyException as e:
         # Handle spotify API errors
         if "Insufficient client scope" in str(e):
@@ -153,7 +161,7 @@ def get_listening_history(request):
         else:
             return JsonResponse({'error': str(e)}, status=500)
     
-    return JsonResponse({'listening_history': listening_history}, safe=False)
+    return JsonResponse({'success': 'listening history retrieved and stored in  session. '})
  
 def save_listening_history(request):
     access_token = request.session.get('spotify_access_token')
@@ -164,7 +172,7 @@ def save_listening_history(request):
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(access_token))
 
     try:
-        recent_tracks = sp.current_user_saved_albums(limit=50)
+        recent_tracks = sp.current_user_saved_albums(limit=10)
 
         for track in recent_tracks['items']:
             song_name = track['track']['name']
@@ -189,7 +197,13 @@ def save_listening_history(request):
             return JsonResponse({'error': str(e)}, status=500)
 
 def home(request):
-    return render(request, 'spotify/home.html')
+    listening_history = request.session.get('listening_history', [])
+
+    print("Listening History in home view:", listening_history)
+    context = {
+        'recently_played_tracks' : listening_history, 
+    }
+    return render(request, 'spotify/home.html', context)
 
 def preprocess_listening_history(request):
     # get the listening history from the db
@@ -292,3 +306,8 @@ def check_similarity(request):
     else:
         return render(request, 'spotify/similarity_results.html', {'similarity_scores': []})
 
+def error(request, error_message):
+    context = {
+        'error_message' : error_message,
+    }
+    return render(request, 'spotify/error.html', context)

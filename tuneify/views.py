@@ -17,9 +17,10 @@ from functools import wraps
 from django.contrib.auth.models import User
 from django.urls import reverse
 import requests
+from collections import Counter 
 
 # Create your views here.
-scopes = 'user-library-read user-read-private user-read-email user-read-recently-played'
+scopes = 'user-library-read user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public'
 
 
 def spotify_auth(request):
@@ -43,37 +44,69 @@ def spotify_profile(request):
         sp = spotipy.Spotify(auth=access_token)
         current_user = sp.current_user()
         display_name = current_user['display_name']
-        recently_played_tracks = sp.current_user_recently_played(limit=10)
+        recently_played_tracks = sp.current_user_recently_played(limit=50)
+        top_artists = sp.current_user_top_artists(limit=5)
 
-        print("Listening History in profile view:", recently_played_tracks)
+        # seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
+
+        # recommended_tracks = get_music_recommendations(sp, seed_tracks, limit=10)
+
+        artist_names = [artist['name'] for artist in top_artists['items']]
+        concert_recommendations = get_concert_recommendations(artist_names)
+
+        unique_tracks_uris = set()
+        unique_recently_played_tracks = []
+
+        for track_data in recently_played_tracks.get('items', []):
+            track_uri = track_data['track']['uri']
+
+            if track_uri not in unique_tracks_uris:
+                unique_recently_played_tracks.append(track_data)
+                unique_tracks_uris.add(track_uri)
+        
+
+        context = {
+            'display_name': display_name,
+            'recently_played_tracks': unique_recently_played_tracks,
+            'top_artists': top_artists['items'],
+            # 'recommended_tracks': recommended_tracks,
+            'concert_recommendations': concert_recommendations,
+        }
 
     except SpotifyException as e:
         messages.error(request, f'Spotify API error: {e}')
         return redirect('home')
+    except Exception as e:
+        messages.error(request, f'An error occured: {e}')
+        return redirect('home')
     
-    return render(request, 'spotify/profile.html', {'display_name': display_name, 'recently_played_tracks': recently_played_tracks})
+    return render(request, 'spotify/profile.html', context)
 
-
+from SpotifyProject import settings as st
 def spotify_authroize(request):
     authorization_url = 'https://accounts.spotify.com/authrorize'
-    redirect_url = request.build_absolute_uri(reverse('spotify_callback'))
+    redirect_uri = request.build_absolute_uri(reverse('spotify_callback'))
+
+    client_id = st.SPOTIPY_CLIENT_ID
     params = {
-        'client_id' : 'your_client_id',
-        'redirect_uri' : redirect_url,
+        'client_id' : client_id,
+        'redirect_uri' : redirect_uri,
         'response_type' : 'code',
         'scope' : scopes,
     }
-    authorization_uri = f'{authorization_url}?client_id={params["client_id"]}&redirect_uri ={params["redirect_uri"]}&response_type={params["response_type"]}&scope={params["scope"]}'
+    authorization_uri = f'{authorization_url}?client_id={params["client_id"]}&redirect_uri={params["redirect_uri"]}&response_type={params["response_type"]}&scope={params["scope"]}'
 
-    return redirect(authorization_url)
+    return redirect(authorization_uri)
 
 def spotify_callback(request):
     code = request.GET.get('code')
 
     token_url = 'https://accounts.spotify.com/api/token'
+    client_id = st.SPOTIPY_CLIENT_ID
+    client_secret = st.SPOTIPY_CLIENT_SECRET
     data = {
-        'client_id' : 'c9341baf78624ba987043a8966bb724b',
-        'client_secret' : '9feb6c5393374b0d9bea14dc391ecccb',
+        'client_id' : client_id,
+        'client_secret' : client_secret,
         'grant_type' : 'authorization_code',
         'code' : code,
         'redirect_uri' : request.build_absolute_uri(reverse('spotify_callback')),
@@ -84,6 +117,7 @@ def spotify_callback(request):
         token_data = response.json()
         access_token = token_data['access_token']
         request.session['spotify_access_token'] = access_token
+
         messages.success(request, 'Successfully authenticated with Spotify.')
 
         return redirect('home')
@@ -153,7 +187,6 @@ def get_listening_history(request):
         listening_history = sp.current_user_recently_played(limit=10)
 
         request.session['listening_history'] = listening_history
-        print("After API call: Listening History =", listening_history)
     except spotipy.SpotifyException as e:
         # Handle spotify API errors
         if "Insufficient client scope" in str(e):
@@ -199,7 +232,6 @@ def save_listening_history(request):
 def home(request):
     listening_history = request.session.get('listening_history', [])
 
-    print("Listening History in home view:", listening_history)
     context = {
         'recently_played_tracks' : listening_history, 
     }
@@ -306,8 +338,39 @@ def check_similarity(request):
     else:
         return render(request, 'spotify/similarity_results.html', {'similarity_scores': []})
 
-def error(request, error_message):
-    context = {
-        'error_message' : error_message,
-    }
-    return render(request, 'spotify/error.html', context)
+# def get_music_recommendations(sp, seed_tracks, limit=10):
+#     try:
+#         recommendations = sp.recommendations(seed_tracks,limit=limit)
+
+#         recommended_tracks = []
+
+#         for track in recommendations['tracks']:
+#             recommended_track = {
+#                 'name': track['name'],
+#                 'artist': ','.join([artist['name'] for artist in track['artist']]),
+#                 'uri': track['uri'],
+#             }
+#         recommended_tracks.append(recommended_track)
+
+#         return recommended_tracks
+#     except SpotifyException as e:
+#         raise e
+#     except Exception as e:
+#         raise e
+
+def get_concert_recommendations(artist_name, limit=10):
+    api_key = st.LASTFM_KEY
+
+    concert_recommendations = []
+
+    for artist_name in artist_name:
+        response = requests.get(f'http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist={artist_name}&api_key={api_key}&format=json&limit={limit}')
+
+        if response.status_code == 200:
+            data = response.json()
+            events = data.get('events', {}).get('event', [])
+
+            for event in events:
+                concert_recommendations.append(event.get('title'))
+
+    return concert_recommendations

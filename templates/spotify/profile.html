@@ -1,20 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Spotify Profile</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
 </head>
 <body>
     <h1>Welcome to Your Spotify Profile</h1>
-    <p>Hello, {{ display_name }}!</p>
+    <div class="container">
+        <p>Hello, {{ display_name }}!</p>
 
-    <h2>Recently Played Tracks</h2>
-    <ul>
-        {% for track in recently_played_tracks %}
-            <li>{{ track.name }} by {{ track.artists.0.name }}</li>
-        {% endfor %}
-    </ul>
-
-    <!-- Add more content to your profile page as needed -->
-
+        <h2>Recently Played Tracks</h2>
+        <div class="song-list-container">
+            <div class="scrollable-list">
+                <ul class="track-list" id="recently-played-list">
+                    {% for track in recently_played_tracks %}
+                        <li>
+                            <strong>{{ track.track.name }}</strong> by {{ track.track.artists.0.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>              
+        <h2>Top 5 Artists</h2>
+        <ul class="track-list">
+            {% for artist in top_artists %}
+                <li>
+                    <strong>{{ artist.name }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+        <h2>Music Recommendations</h2>
+        <ul class="recommendations-list">
+            {% for track in recommended_tracks %}
+                <li>
+                    <strong>{{ track.name }}</strong> by {{ track.artist }}
+                    <a href="{{ track.uri }}" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- Add a section for concert recommendations -->
+        <h2>Concert Recommendations</h2>
+        <ul class="concert-list">
+            {% for recommendation in concert_recommendations %}
+                <li>{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        // Function to enable smooth scrolling on hover
+        function enableSmoothScroll() {
+            const songList = document.querySelector('.song-list-container');
+            if (songList) {
+                songList.classList.add('scrollable');
+            }
+        }
+    
+        // Function to disable smooth scrolling
+        function disableSmoothScroll() {
+            const songList = document.querySelector('.song-list-container');
+            if (songList) {
+                songList.classList.remove('scrollable');
+            }
+        }
+    
+        // Add event listeners for hover
+        const songListContainer = document.querySelector('.song-list-container');
+        if (songListContainer) {
+            songListContainer.addEventListener('mouseenter', enableSmoothScroll);
+            songListContainer.addEventListener('mouseleave', disableSmoothScroll);
+        }
+    </script>
+     
 </body>
 </html>

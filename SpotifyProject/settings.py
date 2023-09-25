@@ -135,3 +135,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SPOTIPY_CLIENT_ID = 'c9341baf78624ba987043a8966bb724b'
 SPOTIPY_CLIENT_SECRET = '9feb6c5393374b0d9bea14dc391ecccb'
 SPOTIPY_REDIRECT_URL = 'http://localhost:8080/spotify_callback/' #update with actual url
+LASTFM_KEY = '64d114c2e25236a7d5f3b8ac62da5d24'
+LASTFM_SECRET = 'cce29b78ce514544f7a5de6c3a7c2a0b'

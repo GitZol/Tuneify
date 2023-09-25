@@ -32,7 +32,6 @@ urlpatterns = [
     path('get_user_similarity_scores/', views.get_user_similarity_score, name='get_user_similarity_scores'),
     path('check_similarity/', views.check_similarity, name='check_similarity'),
     path('profile/', views.profile_view, name='profile'),
-    path('error/<str:error_message>/', views.error, name= 'error'),
 ]
 
 if settings.DEBUG:

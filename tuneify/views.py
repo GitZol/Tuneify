@@ -49,7 +49,7 @@ def spotify_profile(request):
 
         # seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
 
-        # recommended_tracks = get_music_recommendations(sp, seed_tracks, limit=10)
+        top_tracks = sp.current_user_top_tracks(limit=10)
 
         artist_names = [artist['name'] for artist in top_artists['items']]
         concert_recommendations = get_concert_recommendations(artist_names)
@@ -71,6 +71,7 @@ def spotify_profile(request):
             'top_artists': top_artists['items'],
             # 'recommended_tracks': recommended_tracks,
             'concert_recommendations': concert_recommendations,
+            'top_tracks': top_tracks['items'],
         }
 
     except SpotifyException as e:
@@ -374,3 +375,4 @@ def get_concert_recommendations(artist_name, limit=10):
                 concert_recommendations.append(event.get('title'))
 
     return concert_recommendations
+

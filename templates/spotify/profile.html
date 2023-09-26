@@ -9,11 +9,16 @@
     <h1>Welcome to Your Spotify Profile</h1>
     <div class="container">
         <p>Hello, {{ display_name }}!</p>
-
+        <div class="section-buttons">
+            <button id="recently-played-button">Recently Played</button>
+            <button id="top-tracks-button">Top Tracks</button>
+            <button id="top-artists-button">Top 5 Artists</button>
+        </div>
+        <div class="section" id="recently-played-list">
         <h2>Recently Played Tracks</h2>
         <div class="song-list-container">
             <div class="scrollable-list">
-                <ul class="track-list" id="recently-played-list">
+                <ul class="track-list">
                     {% for track in recently_played_tracks %}
                         <li>
                             <strong>{{ track.track.name }}</strong> by {{ track.track.artists.0.name }}
@@ -21,15 +26,29 @@
                     {% endfor %}
                 </ul>
             </div>
-        </div>              
+        </div>
+        </div>
+        <!-- Add a section to display top tracks -->
+        <div class="section" id="top-tracks-section">
+        <h2>Top Tracks</h2>
+        <ul class="track-list" id="top-tracks-section">
+            {% for track in top_tracks %}
+                <li>
+                    <strong>{{ track.name }}</strong> by {{ track.artists.0.name }}
+                </li>
+            {% endfor %}
+        </ul>
+        </div>
+        <div class="section" id="top-artists-section">      
         <h2>Top 5 Artists</h2>
-        <ul class="track-list">
+        <ul class="track-list" id="top-artists-section">
             {% for artist in top_artists %}
                 <li>
                     <strong>{{ artist.name }}</strong>
                 </li>
             {% endfor %}
         </ul>
+        </div>
         <h2>Music Recommendations</h2>
         <ul class="recommendations-list">
             {% for track in recommended_tracks %}
@@ -70,7 +89,40 @@
             songListContainer.addEventListener('mouseenter', enableSmoothScroll);
             songListContainer.addEventListener('mouseleave', disableSmoothScroll);
         }
-    </script>
+
+        // Function to toggle section visibility
+        function toggleSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';  // Hide all sections
+            });
+    
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';  // Show the selected section
+            }
+        }
+    
+        // Add event listeners for section buttons
+        const recentlyPlayedButton = document.getElementById('recently-played-button');
+        const topTracksButton = document.getElementById('top-tracks-button');
+        const topArtistsButton = document.getElementById('top-artists-button');
+    
+        recentlyPlayedButton.addEventListener('click', () => {
+            toggleSection('recently-played-list');
+        });
+    
+        topTracksButton.addEventListener('click', () => {
+            toggleSection('top-tracks-section');
+        });
+    
+        topArtistsButton.addEventListener('click', () => {
+            toggleSection('top-artists-section');
+        });
+    
+        // Initially show the "Top Tracks" section
+        toggleSection('top-tracks-section');
+    </script>    
      
 </body>
 </html>

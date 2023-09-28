@@ -18,6 +18,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 import requests
 from collections import Counter 
+import json
 
 # Create your views here.
 scopes = 'user-library-read user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public'
@@ -47,9 +48,16 @@ def spotify_profile(request):
         recently_played_tracks = sp.current_user_recently_played(limit=50)
         top_artists = sp.current_user_top_artists(limit=5)
 
-        # seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
+        seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
+        print(seed_tracks)
+        
+        recommended_tracks = get_music_recommendations(access_token, seed_tracks, limit=10)
+        if not recommended_tracks:
+            print("Error fetching recommendations:", recommended_tracks)
+
 
         top_tracks = sp.current_user_top_tracks(limit=10)
+
 
         artist_names = [artist['name'] for artist in top_artists['items']]
         concert_recommendations = get_concert_recommendations(artist_names)
@@ -69,7 +77,7 @@ def spotify_profile(request):
             'display_name': display_name,
             'recently_played_tracks': unique_recently_played_tracks,
             'top_artists': top_artists['items'],
-            # 'recommended_tracks': recommended_tracks,
+            'recommended_tracks': recommended_tracks,
             'concert_recommendations': concert_recommendations,
             'top_tracks': top_tracks['items'],
         }
@@ -339,25 +347,28 @@ def check_similarity(request):
     else:
         return render(request, 'spotify/similarity_results.html', {'similarity_scores': []})
 
-# def get_music_recommendations(sp, seed_tracks, limit=10):
-#     try:
-#         recommendations = sp.recommendations(seed_tracks,limit=limit)
 
-#         recommended_tracks = []
+def get_music_recommendations(access_token, seed_tracks, limit=10):
+    try:
+        sp = spotipy.Spotify(auth=str(access_token))
+        user_info = sp.current_user()
+        # print("User Info:", user_info)
+        
+        seed_tracks_uris = [{'uri': track_uri} for track_uri in seed_tracks]
+        print("Seed Tracks URIs:", seed_tracks_uris)
+        # print(access_token)
 
-#         for track in recommendations['tracks']:
-#             recommended_track = {
-#                 'name': track['name'],
-#                 'artist': ','.join([artist['name'] for artist in track['artist']]),
-#                 'uri': track['uri'],
-#             }
-#         recommended_tracks.append(recommended_track)
+        recommendations = sp.recommendations(seed_tracks= seed_tracks_uris, limit=limit)
+        # print(recommendations)
+        if 'error' in recommendations:
+            print("Spotify API Error:", recommendations['error'])
 
-#         return recommended_tracks
-#     except SpotifyException as e:
-#         raise e
-#     except Exception as e:
-#         raise e
+        recommended_tracks = recommendations.get('tracks', [])    
+
+        return recommended_tracks
+    except Exception as e:
+        print("An error occurred:", e)
+        return []
 
 def get_concert_recommendations(artist_name, limit=10):
     api_key = st.LASTFM_KEY

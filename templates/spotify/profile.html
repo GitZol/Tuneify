@@ -50,10 +50,10 @@
         </ul>
         </div>
         <h2>Music Recommendations</h2>
-        <ul class="recommendations-list">
+        <ul class="recommendations-list" id="music_recommendations">
             {% for track in recommended_tracks %}
                 <li>
-                    <strong>{{ track.name }}</strong> by {{ track.artist }}
+                    <strong>{{ track.name }}</strong> by {{ track.artists.0.name }}
                     <a href="{{ track.uri }}" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
                 </li>
             {% endfor %}

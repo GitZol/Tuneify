@@ -7,7 +7,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from spotipy.exceptions import SpotifyException
 from datetime import datetime
 from .models import ListeningHistory, UserProfile, SimilarityScore
@@ -17,11 +17,19 @@ from functools import wraps
 from django.contrib.auth.models import User
 from django.urls import reverse
 import requests
+import spotipy.util as util
 from collections import Counter 
 import json
+from social_django.views import auth as social_auth
+from social_core.backends.oauth import BaseOAuth2
+from social_django.utils import psa
+# import logging
+# import sys
+
+# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 # Create your views here.
-scopes = 'user-library-read user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public'
+scopes = 'user-library-read user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public playlist-modify-private'
 
 
 def spotify_auth(request):
@@ -45,22 +53,25 @@ def spotify_profile(request):
         sp = spotipy.Spotify(auth=access_token)
         current_user = sp.current_user()
         display_name = current_user['display_name']
+        user_id = current_user['id']
         recently_played_tracks = sp.current_user_recently_played(limit=50)
         top_artists = sp.current_user_top_artists(limit=5)
 
-        seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
-        print(seed_tracks)
-        
-        recommended_tracks = get_music_recommendations(access_token, seed_tracks, limit=10)
-        if not recommended_tracks:
-            print("Error fetching recommendations:", recommended_tracks)
+        obscurity_scores = calculate_music_obscurity(request, recently_played_tracks)
 
+        seed_tracks = [track['track']['uri'] for track in recently_played_tracks.get('items', [])]
+        
+        recommended_tracks = get_music_recommendations(access_token, seed_tracks, limit=50)
+
+        if request.method == 'POST':
+            if 'create-playlist' in request.POST:
+                playlist_name = "Tuneify Recommended Tracks Playlist"
+                create_and_add_playlist(access_token, user_id, playlist_name, [track['uri'] for track in recommended_tracks])
+                messages.success(request, 'Playlist created successfully!')
+
+                return HttpResponseRedirect(reverse('spotify_profile'))
 
         top_tracks = sp.current_user_top_tracks(limit=10)
-
-
-        artist_names = [artist['name'] for artist in top_artists['items']]
-        concert_recommendations = get_concert_recommendations(artist_names)
 
         unique_tracks_uris = set()
         unique_recently_played_tracks = []
@@ -78,8 +89,8 @@ def spotify_profile(request):
             'recently_played_tracks': unique_recently_played_tracks,
             'top_artists': top_artists['items'],
             'recommended_tracks': recommended_tracks,
-            'concert_recommendations': concert_recommendations,
             'top_tracks': top_tracks['items'],
+            'obscurity_scores': obscurity_scores,
         }
 
     except SpotifyException as e:
@@ -348,18 +359,13 @@ def check_similarity(request):
         return render(request, 'spotify/similarity_results.html', {'similarity_scores': []})
 
 
-def get_music_recommendations(access_token, seed_tracks, limit=10):
+def get_music_recommendations(access_token, seed_tracks, limit=50):
     try:
-        sp = spotipy.Spotify(auth=str(access_token))
-        user_info = sp.current_user()
-        # print("User Info:", user_info)
+        sp = spotipy.Spotify(auth=access_token)
         
-        seed_tracks_uris = [{'uri': track_uri} for track_uri in seed_tracks]
-        print("Seed Tracks URIs:", seed_tracks_uris)
-        # print(access_token)
+        top_5_tracks = seed_tracks[:5]
+        recommendations = sp.recommendations(seed_tracks= top_5_tracks, limit=limit)
 
-        recommendations = sp.recommendations(seed_tracks= seed_tracks_uris, limit=limit)
-        # print(recommendations)
         if 'error' in recommendations:
             print("Spotify API Error:", recommendations['error'])
 
@@ -370,20 +376,59 @@ def get_music_recommendations(access_token, seed_tracks, limit=10):
         print("An error occurred:", e)
         return []
 
-def get_concert_recommendations(artist_name, limit=10):
-    api_key = st.LASTFM_KEY
 
-    concert_recommendations = []
+def create_and_add_playlist(access_token, user_id, playlist_name, tracks_uris):
+    try:
+        sp = spotipy.Spotify(auth=access_token)
 
-    for artist_name in artist_name:
-        response = requests.get(f'http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist={artist_name}&api_key={api_key}&format=json&limit={limit}')
+        playlist = sp.user_playlist_create(user_id, playlist_name)
 
-        if response.status_code == 200:
-            data = response.json()
-            events = data.get('events', {}).get('event', [])
+        sp.user_playlist_add_tracks(user_id, playlist['id'], tracks_uris)
 
-            for event in events:
-                concert_recommendations.append(event.get('title'))
+        return playlist
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+    
+def calculate_music_obscurity(request, recently_played_tracks):
+    access_token = request.session.get('spotify_access_token')
 
-    return concert_recommendations
+    if not access_token:
+        messages.error(request, 'Spotify access token not found. Please authenticate with Spotify first.')
+        return redirect('spotify_auth')
+    
+    try:
+        sp = spotipy.Spotify(auth=access_token)
+        obscurity_threshold = 60
 
+        obscurity_scores = []
+        total_popularity_score = 0
+
+        for track in recently_played_tracks['items']:
+            track_name = track['track']['name']
+            track_popularity = track['track']['popularity']
+            total_popularity_score += track_popularity
+
+            if track_popularity < obscurity_threshold:
+                obscurity_scores.append({'track_name': track_name, 'obscurity_score': track_popularity})
+
+        print('obscurity_scores: ', obscurity_scores)
+        print('total_popularity_score: ', total_popularity_score)
+        # print(recently_played_tracks)
+        overall_obscurity_score = (
+        sum(score['obscurity_score'] for score in obscurity_scores) / len(recently_played_tracks['items'])
+        if recently_played_tracks['items']
+        else 0
+        )
+
+        obscurity_percentage = (1 - overall_obscurity_score) * 100
+
+        return obscurity_scores, overall_obscurity_score, obscurity_percentage
+    
+    except spotipy.SpotifyException as e:
+        messages.error(request, f'Spotify API error: {e}')
+        return redirect('home')
+    except Exception as e:
+        messages.error(request, f'An error occurred: {e}')
+        return redirect('home')
+    

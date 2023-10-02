@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from tuneify import views
@@ -32,6 +32,7 @@ urlpatterns = [
     path('get_user_similarity_scores/', views.get_user_similarity_score, name='get_user_similarity_scores'),
     path('check_similarity/', views.check_similarity, name='check_similarity'),
     path('profile/', views.profile_view, name='profile'),
+    path('create_and_add_playlist/', views.create_and_add_playlist, name='create_and_add_playlist')
 ]
 
 if settings.DEBUG:

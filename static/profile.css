@@ -69,6 +69,251 @@ ul.track-list li strong, ul.artist-list li strong {
     overflow-y: hidden;
 }
 
+.scrollable-list {
+    overflow-y: hidden;
+}
+
 .scrollable:hover {
     overflow-y: scroll;
+}
+/* Add this style for the recommendation list */
+.recommendation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* Remove any default margin */
+    overflow: hidden;
+    position: relative;
+}
+
+.recommendation-list li {
+    background-color: #fff; /* Background color for list items */
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s; /* Smooth hover effect */
+}
+
+.recommendation-list li:hover {
+    background-color: #f5f5f5; /* Light gray on hover */
+}
+
+/* Style for the create playlist button (unchanged) */
+.create-playlist-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+.create-playlist-button:hover {
+    background-color: #169845;
+}
+
+/* Style the Obscurity section */
+#obscurity-section {
+    display: none; /* Hide the section by default */
+}
+
+#obscurity-section h2 {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+#obscurity-section p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Style for the Obscurity button */
+#obscurity-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#obscurity-button:hover {
+    background-color: #169845;
+}
+
+/* Style for the recommended songs section */
+#music-recommendations-list {
+    display: none; /* Hide the section by default */
+}
+
+#music-recommendations-list h2 {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+/* Style for the recommended songs list */
+#music-recommendations-list .scrollable-list {
+    max-height: 500px; /* Adjust the height as needed */
+    overflow: hidden;
+    position: relative;
+}
+
+#music-recommendations-list .scrollable-list:hover {
+    overflow-y: scroll;
+}
+
+/* Style for recommended songs list items */
+#music-recommendations-list .recommendation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* Remove any default margin */
+}
+
+#music-recommendations-list .recommendation-list li {
+    background-color: #fff; /* Background color for list items */
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s; /* Smooth hover effect */
+}
+
+#music-recommendations-list .recommendation-list li:hover {
+    background-color: #f5f5f5; /* Light gray on hover */
+}
+
+#top-tracks-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#top-tracks-button:hover {
+    background-color: #169845;
+}
+
+#recently-played-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#recently-played-button:hover {
+    background-color: #169845;
+}
+
+#top-artists-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#top-artists-button:hover {
+    background-color: #169845;
+}
+
+#music-recommendations-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#music-recommendations-button:hover {
+    background-color: #169845;
+}
+
+#concert-recommendations-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#concert-recommendations-button:hover {
+    background-color: #169845;
+}
+
+/* Style for the top navigation buttons */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-container button {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1;
+    margin-right: 10px; /* Add some spacing between buttons */
+}
+
+.button-container button:last-child {
+    margin-right: 0; /* Remove margin from the last button */
+}
+
+.button-container button:hover {
+    background-color: #169845;
+}
+
+.artist-name {
+    font-weight: normal;
+    color: #888;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.track-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
 }

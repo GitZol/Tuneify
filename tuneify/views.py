@@ -23,6 +23,8 @@ import json
 from social_django.views import auth as social_auth
 from social_core.backends.oauth import BaseOAuth2
 from social_django.utils import psa
+import googleapiclient.discovery
+from googleapiclient.errors import HttpError
 # import logging
 # import sys
 
@@ -55,7 +57,7 @@ def spotify_profile(request):
         display_name = current_user['display_name']
         user_id = current_user['id']
         recently_played_tracks = sp.current_user_recently_played(limit=50)
-        top_artists = sp.current_user_top_artists(limit=5)
+        top_artists = sp.current_user_top_artists(limit=10)
 
         obscurity_scores = calculate_music_obscurity(request, recently_played_tracks)
 
@@ -72,6 +74,7 @@ def spotify_profile(request):
                 return HttpResponseRedirect(reverse('spotify_profile'))
 
         top_tracks = sp.current_user_top_tracks(limit=10)
+        top_genres = get_top_genres(request)
 
         unique_tracks_uris = set()
         unique_recently_played_tracks = []
@@ -82,7 +85,6 @@ def spotify_profile(request):
             if track_uri not in unique_tracks_uris:
                 unique_recently_played_tracks.append(track_data)
                 unique_tracks_uris.add(track_uri)
-        
 
         context = {
             'display_name': display_name,
@@ -91,6 +93,7 @@ def spotify_profile(request):
             'recommended_tracks': recommended_tracks,
             'top_tracks': top_tracks['items'],
             'obscurity_scores': obscurity_scores,
+            'top_genres': top_genres,
         }
 
     except SpotifyException as e:
@@ -412,8 +415,8 @@ def calculate_music_obscurity(request, recently_played_tracks):
             if track_popularity < obscurity_threshold:
                 obscurity_scores.append({'track_name': track_name, 'obscurity_score': track_popularity})
 
-        print('obscurity_scores: ', obscurity_scores)
-        print('total_popularity_score: ', total_popularity_score)
+        # print('obscurity_scores: ', obscurity_scores)
+        # print('total_popularity_score: ', total_popularity_score)
         # print(recently_played_tracks)
         overall_obscurity_score = (
         sum(score['obscurity_score'] for score in obscurity_scores) / len(recently_played_tracks['items'])
@@ -432,3 +435,22 @@ def calculate_music_obscurity(request, recently_played_tracks):
         messages.error(request, f'An error occurred: {e}')
         return redirect('home')
     
+def get_top_genres(request):
+    access_token = request.session.get('spotify_access_token')
+    sp = spotipy.Spotify(auth=access_token)
+
+    top_artitst = sp.current_user_top_artists(limit=20)
+
+    genre_counts = {}
+    for artist in top_artitst['items']:
+        artist_details = sp.artist(artist['id'])
+        artist_genres = artist_details['genres']
+        for genre in artist_genres:
+            if genre in genre_counts:
+                genre_counts[genre] += 1
+            else:
+                genre_counts[genre]= 1
+
+    top_genres = sorted(genre_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    print(top_genres)
+    return top_genres

@@ -443,3 +443,94 @@ ul.track-list li strong, ul.artist-list li strong {
     color: #333;
 }
 
+.album-cover {
+    margin-right: 10px;
+    border-radius: 5px;
+    
+}
+
+.burger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.menu-toggle {
+    width: 30px;
+    height: 3px;
+    background: #333;
+    margin: 5px 0;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.menu-toggle.active {
+    background: transparent;
+}
+
+.menu-items {
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.menu-items.active {
+    display: block;
+}
+
+.menu-items li {
+    padding: 10px;
+}
+
+.menu-items li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.menu-items li a:hover {
+    background: #eee;
+}
+
+.welcome-message {
+    background-color: #1DB954;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px; /* Increase or decrease the font size as desired */
+    margin: 0; /* Remove any default margin */
+}
+
+.welcome-message p {
+    font-size: 18px; /* You can adjust the font size for the user's name */
+    margin: 10px 0; /* Add some spacing between the welcome message and the user's name */
+}
+
+.spotify-link {
+    background-color: #c0cdc4; /* Spotify green color */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; /* Remove the underline from links */
+    display: inline-block; /* Make the link a block element for better styling */
+}
+
+.spotify-link:hover {
+    background-color: #169845; /* Slightly darker green on hover */
+}
+
+.spotify-link:focus {
+    outline: none; /* Remove the default focus outline for a cleaner look */
+}

@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
 </head>
 <body>
-    <h1>Welcome to Your Spotify Profile</h1>
+    <h1 class="welcome-message">Welcome to Your Tuneify Profile</h1>
     <div class="container">
         <p>Hello, {{ display_name }}!</p>
         <div class="button-container">
@@ -17,6 +17,18 @@
             <button id="top-genres-button">Top Genres</button>
             <button id="recently-played-button">Recently Played</button>
             <button id="music-recommendations-button">Recommended Songs</button>
+        </div>
+        <div class="burger-menu">
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul class="menu-items">
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#logout">Log Out</a></li>
+            </ul>
         </div>
         <div class="section" id="recently-played-list">
         <h2>Recently Played Tracks</h2>
@@ -29,6 +41,7 @@
                                     <strong>{{ track.track.name }}</strong>
                                     <span class="artist-name"> {{ track.track.artists.0.name }} </span>
                                 </div>
+                                <img src="{{ track.track_image_url }}" alt="Album Cover" class="album-cover">
                             </li>
                         {% endfor %}
                     </ul>
@@ -45,7 +58,7 @@
                         <strong>{{ track.name }}</strong>
                         <span class="artist-name"> {{ track.artists.0.name }} </span>
                     </div>
-                    <img src="{{ track.album_cover_url }}" alt="Album Cover">
+                    <img src="{{ track.album_cover_url }}" alt="Album Cover" class="album-cover">
                 </li>
             {% endfor %}
         </ul>
@@ -58,7 +71,7 @@
                     <div class="track-info">
                         <strong>{{ artist.name }}</strong>
                     </div>
-                    <img src="{{ artist.artist_image_url }}" alt="Artist Image">
+                    <img src="{{ artist.artist_image_url }}" alt="Artist Image" class="album-cover">
                 </li>
             {% endfor %}
         </ul>
@@ -71,11 +84,12 @@
                     <ul class="track-list">
                         {% for track in recommended_tracks %}
                             <li class="track-item">
+                                <img src="{{ track.album_cover_url }}" alt="Album Cover" class="album-cover">
                                 <div class="track-info">
                                     <strong>{{ track.name }} </strong>
                                     <span class="artist-name"> {{ track.artists.0.name }} </span>
                                 </div>
-                                <a href="{{ track.uri }}" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
+                                <a href="{{ track.uri }}" target="_blank" rel="noopener noreferrer" class="spotify-link">Listen on Spotify</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -154,6 +168,12 @@
         const topGenresButton = document.getElementById('top-genres-button');
         const musicRecommendationsButton = document.getElementById('music-recommendations-button');
         const obscurityButton = document.getElementById('obscurity-button');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuItems = document.querySelector('.menu-items');
+
+        menuToggle.addEventListener('click', () => {
+            menuItems.classList.toggle('active');
+        });
     
         recentlyPlayedButton.addEventListener('click', () => {
             toggleSection('recently-played-list');

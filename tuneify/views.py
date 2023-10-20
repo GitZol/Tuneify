@@ -87,12 +87,19 @@ def spotify_profile(request):
         unique_tracks_uris = set()
         unique_recently_played_tracks = []
 
+
         for track_data in recently_played_tracks.get('items', []):
             track_uri = track_data['track']['uri']
 
             if track_uri not in unique_tracks_uris:
-                unique_recently_played_tracks.append(track_data)
-                unique_tracks_uris.add(track_uri)
+                track_info = sp.track(track_uri)
+
+                if 'album' in track_info and 'images' in track_info['album'] and len(track_info['album']['images']) > 0:
+                    track_data['track_image_url'] = track_info['album']['images'][0]['url']
+
+                    unique_recently_played_tracks.append(track_data)
+                    unique_tracks_uris.add(track_uri)
+
 
         top_tracks_with_images = []
         top_artists_with_images = []
@@ -115,8 +122,6 @@ def spotify_profile(request):
                 artist['artist_image_url'] = None
 
             top_artists_with_images.append(artist)
-            
-
 
         context = {
             'display_name': display_name,
@@ -132,7 +137,7 @@ def spotify_profile(request):
         messages.error(request, f'Spotify API error: {e}')
         return redirect('home')
     except Exception as e:
-        messages.error(request, f'An error occured: {e}')
+        messages.error(request, f'An error occurred: {e}')
         return redirect('home')
     
     return render(request, 'spotify/profile.html', context)
@@ -410,7 +415,14 @@ def get_music_recommendations(access_token, seed_tracks, limit=50):
         if 'error' in recommendations:
             print("Spotify API Error:", recommendations['error'])
 
-        recommended_tracks = recommendations.get('tracks', [])    
+        recommended_tracks = recommendations.get('tracks', [])
+
+        for track in recommended_tracks:
+            album_uri = track['album']['uri']
+            album_info = sp.album(album_uri)
+
+            if 'images' in album_info and len(album_info['images']) > 0:
+                track['album_cover_url'] = album_info['images'][0]['url']    
 
         return recommended_tracks
     except Exception as e:

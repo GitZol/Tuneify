@@ -85,8 +85,6 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.oauth.EventbriteOAuth2',
-    'social_core.backends.eventbrite,EventbriteOAuth2',
 ]
 
 # Password validation
@@ -139,6 +137,8 @@ SPOTIPY_CLIENT_ID = 'c9341baf78624ba987043a8966bb724b'
 SPOTIPY_CLIENT_SECRET = '9feb6c5393374b0d9bea14dc391ecccb'
 SPOTIPY_REDIRECT_URL = 'http://localhost:8080/spotify_callback/'
 YOUTUBE_API_KEY = 'AIzaSyBZHYhlqAl1ov_P8zdpvSJ_EvXX1nqe2B8'
+
+LOGIN_REDIRECT_URL = 'spotify_auth'
 
 # SOCIAL_AUTH_EVENTBRITE_OAUTH2_KEY = 'ILHNHMAHDCERBZLRNX'
 # SOCIAL_AUTH_EVENTBRITE_OAUTH2_SECRET = 'UH6CLQFQIGHKRFWGODJZQNYP76PQOTB246ITFOT4ABXXCEB4OI'

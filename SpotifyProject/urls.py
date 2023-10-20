@@ -19,7 +19,7 @@ from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from tuneify import views
-from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,7 +32,10 @@ urlpatterns = [
     path('get_user_similarity_scores/', views.get_user_similarity_score, name='get_user_similarity_scores'),
     path('check_similarity/', views.check_similarity, name='check_similarity'),
     path('profile/', views.profile_view, name='profile'),
-    path('create_and_add_playlist/', views.create_and_add_playlist, name='create_and_add_playlist')
+    path('create_and_add_playlist/', views.create_and_add_playlist, name='create_and_add_playlist'),
+    # path('register_or_login/', views.register_or_login, name='register_or_login'),
+    path('register/', views.register_page, name='register_page'),
+    path('login/', views.login_page, name='login_page'),
 ]
 
 if settings.DEBUG:

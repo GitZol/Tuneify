@@ -34,3 +34,131 @@ li a {
 li a:hover {
     text-decoration: underline;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+h2 {
+    color: #333;
+}
+
+.spotify-form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1a6062;
+    color: #1DB954;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.spotify-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.spotify-form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 30px;
+    
+}
+
+.spotify-form label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.spotify-form input[type="text"],
+.spotify-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+    background-color: #121212;
+    color: #1DB954;
+    font-size: 14px;
+}
+
+.spotify-form button.spotify-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1DB954;
+    color: #191414;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.spotify-form button.spotify-button:hover {
+    background-color: #0E864A;
+}
+
+/* Style the container for the homepage */
+#homepage-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the heading */
+h1 {
+    color: #1DB954;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Style the introductory paragraph */
+p {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Style the buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #1DB954;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0E864A;
+}
+
+/* Additional button styles can be added as needed */
+
+/* Style the homepage content */
+#homepage-content {
+    text-align: center;
+}
+
+/* Style the footer */
+#footer {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.home {
+    background-color: #647155;
+}

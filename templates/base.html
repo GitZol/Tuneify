@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Your Page Title{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
+</head>
+<body>
+    <header>
+        <h1>{% block header %}Welcome to Your Spotify Profile{% endblock %}</h1>
+        <div class="container">
+            <p>Hello, {{ display_name }}!</p>
+        </div>
+    </header>
+
+    <nav class="navigation">
+        <button id="obscurity-button">Obscurity</button>
+        <button id="top-tracks-button">Top Tracks</button>
+        <button id="top-artists-button">Top Artists</button>
+        <button id="top-genres-button">Top Genres</button>
+        <button id="recently-played-button">Recently Played</button>
+        <button id="music-recommendations-button">Recommended Songs</button>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('.section');
+        const buttons = document.querySelectorAll('.navigation button');
+
+        // Function to toggle section visibility
+        function toggleSection(sectionId) {
+            sections.forEach(section => {
+                section.style.display = 'none';  // Hide all sections
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';  // Show the selected section
+            }
+        }
+
+        // Add event listeners for section buttons
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                toggleSection(button.id + '-section');
+            });
+        });
+
+        toggleSection('obscurity-section');
+    </script>
+</body>
+</html>

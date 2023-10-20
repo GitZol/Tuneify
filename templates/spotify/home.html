@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
-<body>
+<body class="home">
     <h1>Welcome to the Homepage</h1>
     <p>This is your homepage. You can navigate to different sections of the website using the buttons below:</p>
 
@@ -15,10 +17,6 @@
 
     <!-- Button to view listening history -->
     <a href="{% url 'check_similarity' %}" class="btn btn-info">Check Similarity</a>
-
-    <!-- Add more buttons as needed for your application -->
-
-    <p>Feel free to customize this homepage further to fit your needs.</p>
 
 </body>
 </html>

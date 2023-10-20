@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="spotify-form">
+        <h2>Login</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ login_form.username }}
+            </div>
+            <div class="form-group">
+                <label for="id_password">Password:</label>
+                {{ login_form.password }}
+            </div>
+
+            <button class="spotify-button" type="submit" name="login">Login</button>
+        </form>
+    </div>
+</body>
+</html>

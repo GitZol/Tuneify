@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,6 +45,7 @@
                         <strong>{{ track.name }}</strong>
                         <span class="artist-name"> {{ track.artists.0.name }} </span>
                     </div>
+                    <img src="{{ track.album_cover_url }}" alt="Album Cover">
                 </li>
             {% endfor %}
         </ul>
@@ -52,8 +54,11 @@
         <h2>Top 10 Artists</h2>
         <ul class="track-list">
             {% for artist in top_artists %}
-                <li>
-                    <strong>{{ artist.name }}</strong>
+                <li class="track-item">
+                    <div class="track-info">
+                        <strong>{{ artist.name }}</strong>
+                    </div>
+                    <img src="{{ artist.artist_image_url }}" alt="Artist Image">
                 </li>
             {% endfor %}
         </ul>
@@ -83,10 +88,12 @@
         </div>
         <div class="section" id="top-genres-section">
             <h2>Top 10 Genres</h2>
-            <ul class="genre-list">
+            <ul class="track-list">
                 {% for genre, count in top_genres %}
-                    <li>
-                        <span class="genre-tag genre-{{ count }}">{{ genre }}</span>
+                    <li class="track-item">
+                        <strong>
+                            <span class="track-name">{{ genre }}</span>
+                        </strong>
                     </li>  
                 {% endfor %}
             </ul>

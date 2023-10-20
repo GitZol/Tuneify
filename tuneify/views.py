@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login as auth_login, authenticate
 from .models import UserProfile
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -25,6 +25,7 @@ from social_core.backends.oauth import BaseOAuth2
 from social_django.utils import psa
 import googleapiclient.discovery
 from googleapiclient.errors import HttpError
+from .forms import CustomUserCreationForm
 # import logging
 # import sys
 
@@ -42,8 +43,15 @@ def spotify_auth(request):
         scope=scopes,
     )
     auth_url = f"https://accounts.spotify.com/authorize?client_id={sp_oauth.client_id}&response_type=code&redirect_uri={sp_oauth.redirect_uri}&scope={sp_oauth.scope}"
-    return redirect(auth_url)
 
+    if request.user.is_authenticated:
+        return redirect(auth_url)
+
+    else:
+        return redirect('register_page')
+    
+
+@login_required(login_url='login_page')
 def spotify_profile(request):
     access_token = request.session.get('spotify_access_token')
 
@@ -86,12 +94,36 @@ def spotify_profile(request):
                 unique_recently_played_tracks.append(track_data)
                 unique_tracks_uris.add(track_uri)
 
+        top_tracks_with_images = []
+        top_artists_with_images = []
+
+        for track in top_tracks['items']:
+            cover_url = get_album_cover_url(track, access_token)
+
+            if cover_url:
+                track['album_cover_url'] = cover_url
+                top_tracks_with_images.append(track)
+
+        for artist in top_artists['items']:
+            artist_info = sp.artist(artist['id'])
+
+            if 'images' in artist_info and artist_info['images']:
+                images_url = artist_info['images'][0]['url']
+                artist['artist_image_url'] = images_url
+
+            else:
+                artist['artist_image_url'] = None
+
+            top_artists_with_images.append(artist)
+            
+
+
         context = {
             'display_name': display_name,
             'recently_played_tracks': unique_recently_played_tracks,
-            'top_artists': top_artists['items'],
+            'top_artists': top_artists_with_images,
             'recommended_tracks': recommended_tracks,
-            'top_tracks': top_tracks['items'],
+            'top_tracks': top_tracks_with_images,
             'obscurity_scores': obscurity_scores,
             'top_genres': top_genres,
         }
@@ -149,10 +181,16 @@ def spotify_callback(request):
         messages.error(request, 'Failed to authenticated with Spotofy. Please try again later.')
         return redirect('home')
     
+def get_album_cover_url(track, access_token):
+    sp = spotipy.Spotify(auth=access_token)
+    track_info = sp.track(track['uri'])
+    if 'album' in track_info and 'images' in track_info['album'] and len(track_info['album']['images']) > 0:
+        return track_info['album']['images'][0]['url']
+    return None
 
 def profile_view(request):
     # Your profile view logic here
-    return render(request, 'profile.html')  # Render a template for the profile page
+    return render(request, 'spotify/profile.html')  # Render a template for the profile page
 
 
 
@@ -452,5 +490,72 @@ def get_top_genres(request):
                 genre_counts[genre]= 1
 
     top_genres = sorted(genre_counts.items(), key=lambda x: x[1], reverse=True)[:10]
-    print(top_genres)
+
     return top_genres
+
+# def register_or_login(request):
+#     registration_form = UserCreationForm()
+#     login_form = AuthenticationForm()
+
+#     if request.method == 'POST':
+#         if 'register' in request.POST:
+#             registration_form = UserCreationForm(request.POST)
+#             if registration_form.is_valid():
+#                 user = registration_form.save()
+#                 auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                 messages.success(request, 'Registration successful. You are noe logged in.')
+#                 return redirect('spotify_auth')
+            
+#             else:
+#                 messages.error(request, 'Registration failed. Please check the form data.')
+            
+#         elif 'login' in request.POST:
+#             login_form = AuthenticationForm(request, request.POST)
+#             if login_form.is_valid():
+#                 user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
+#                 if user is not None:
+#                     auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                     print("User authenticated and logged in successfully.")
+#                     messages.success(request, 'Login successful.')
+#                     return redirect('spotify_auth')
+                
+#                 else:
+#                     print("User authentication failed.")
+#                     messages.error(request, 'Login failed. Invalid username or password.')
+
+#             else:
+#                 messages.error(request, 'Login failed. Invaild username or password.')
+#     else:
+#         registration_form = UserCreationForm()
+#         login_form = AuthenticationForm()
+    
+#     return render(request, 'register_or_login.html', {'registration_form': registration_form, 'login_form': login_form,})
+
+def register_page(request):
+    registration_form = UserCreationForm(request.POST)
+
+    if request.method == 'POST':
+        if registration_form.is_valid():
+            user = registration_form.save()
+            auth_login(request, user)
+            print("user regitered")
+            return redirect('spotify_profile')
+        else:
+            print("user not registered")
+        
+    return render(request, 'registration_form.html', {'registration_form': registration_form})
+    
+
+def login_page(request):
+    login_form = AuthenticationForm()
+
+    if request.method == 'POST':
+        login_form = AuthenticationForm(request, request.POST)
+        if login_form.is_valid():
+            user = login_form.get_user()
+            auth_login(request, user)
+            print("user is valid")
+            return redirect('spotify_profile')
+        else:
+            print("user not valid")
+    return render(request, 'login_form.html', {'login_form': login_form})

@@ -43,6 +43,9 @@ def spotify_auth(request):
     auth_url = f"https://accounts.spotify.com/authorize?client_id={sp_oauth.client_id}&response_type=code&redirect_uri={sp_oauth.redirect_uri}&scope={sp_oauth.scope}"
 
     if request.user.is_authenticated:
+
+        if UserProfile.objects.filter(user=request.user).exists():
+            return HttpResponse("You have already linked a Spotify account.")
         return redirect(auth_url)
 
     else:
@@ -573,3 +576,6 @@ def login_page(request):
 class CustomLogoutView(LogoutView):
     template_name = 'logout.html'
 
+    def get(self, *args, **kwargs):
+        self.request.session.flush()
+        return super().get(*args, **kwargs)

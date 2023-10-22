@@ -26,10 +26,8 @@ from social_django.utils import psa
 import googleapiclient.discovery
 from googleapiclient.errors import HttpError
 from .forms import CustomUserCreationForm
-# import logging
-# import sys
+from django.contrib.auth.views import LogoutView
 
-# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 # Create your views here.
 scopes = 'user-library-read user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public playlist-modify-private'
@@ -571,3 +569,7 @@ def login_page(request):
         else:
             print("user not valid")
     return render(request, 'login_form.html', {'login_form': login_form})
+
+class CustomLogoutView(LogoutView):
+    template_name = 'logout.html'
+

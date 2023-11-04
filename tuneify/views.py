@@ -27,6 +27,9 @@ import googleapiclient.discovery
 from googleapiclient.errors import HttpError
 from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LogoutView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 # Create your views here.
@@ -578,4 +581,22 @@ class CustomLogoutView(LogoutView):
 
     def get(self, *args, **kwargs):
         self.request.session.flush()
+        messages.success(self.request, 'You have been logged out successfully.')
         return super().get(*args, **kwargs)
+
+@login_required
+def account(request):
+    password_change_form = PasswordChangeForm(request.user)
+    if request.method == "POST":
+        password_change_form = PasswordChangeForm(request.user)
+        if password_change_form.is_valid():
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updates.')
+            return redirect('account')
+        else:
+            messages.error(request, "Please correct the error(s) below.")
+    else:
+        password_change_form = PasswordChangeForm(request.user)
+
+    return render(request, 'spotify/account.html', {'user': request.user, 'password_change_form' : password_change_form})

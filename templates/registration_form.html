@@ -6,9 +6,16 @@
     <title>Register</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
-<body>
-    <div class="spotify-form">
+<body class="registration">
+    <div class="registration-form">
         <h2>Register</h2>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
         <form method="post">
             {% csrf_token %}
@@ -25,7 +32,7 @@
                 {{ registration_form.password2 }}
             </div>
 
-            <button class="spotify-button" type="submit" name="register">Register</button>
+            <button class="registration-button" type="submit" name="register">Register</button>
         </form>
 
         <p>Already have an account? <a class="login-link" href="{% url 'login_page' %}">Login</a></p>

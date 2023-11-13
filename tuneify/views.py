@@ -202,45 +202,6 @@ def profile_view(request):
     return render(request, 'spotify/profile.html')  # Render a template for the profile page
 
 
-
-# def spotify_callback(request):
-#     sp_oauth = SpotifyOAuth(
-#         settings.SPOTIPY_CLIENT_ID,
-#         settings.SPOTIPY_CLIENT_SECRET,
-#         settings.SPOTIPY_REDIRECT_URL,
-#     )
-#     token_info = sp_oauth.get_access_token(request.GET.get('code'))
-
-#     if not token_info:
-#         messages.error(request, 'Spotify authentication failed. Please tryb again.')
-#         return redirect('spotify_auth')
-    
-#     access_token = token_info['access_token']
-    
-#     try:
-#         sp = spotipy.Spotify(auth=access_token)
-#         current_user = sp.current_user()
-#         spotify_id = current_user['id']
-#         display_name = current_user['display_name']
-
-#         # auth_login(request, user_profile.user)
-
-#     except SpotifyException as e:
-#         messages.error(request, f'Spotify API error: {e}')
-#         return redirect('home')
-    
-#     user_profile, created = UserProfile.objects.get_or_create(spotify_id = spotify_id, defaults={'display_name': display_name})
-
-#     if created:
-#         user, _ = User.objects.get_or_create(username=spotify_id)
-#         user.userprofile = user_profile
-#         user.save()
-
-#     #Store the access token
-#     request.session['spotify_access_tjjoken'] = access_token
-
-#     return redirect('spotify_profile')
-
 def get_listening_history(request):
     #get user's access token from the session
     access_token = request.session.get('spotify_access_token')
@@ -465,13 +426,17 @@ def calculate_music_obscurity(request, recently_played_tracks):
             track_name = track['track']['name']
             track_popularity = track['track']['popularity']
             total_popularity_score += track_popularity
+            track_uri = track['track']['uri']
+            track_info = sp.track(track_uri)
 
             if track_popularity < obscurity_threshold:
-                obscurity_scores.append({'track_name': track_name, 'obscurity_score': track_popularity})
+                track_image_url = track_info['album']['images'][0]['url']
+                obscurity_scores.append({
+                    'track_name': track_name,
+                    'obscurity_score': track_popularity,
+                    'track_image_url' : track_image_url,
+                    })
 
-        # print('obscurity_scores: ', obscurity_scores)
-        # print('total_popularity_score: ', total_popularity_score)
-        # print(recently_played_tracks)
         overall_obscurity_score = (
         sum(score['obscurity_score'] for score in obscurity_scores) / len(recently_played_tracks['items'])
         if recently_played_tracks['items']
@@ -508,44 +473,6 @@ def get_top_genres(request):
     top_genres = sorted(genre_counts.items(), key=lambda x: x[1], reverse=True)[:10]
 
     return top_genres
-
-# def register_or_login(request):
-#     registration_form = UserCreationForm()
-#     login_form = AuthenticationForm()
-
-#     if request.method == 'POST':
-#         if 'register' in request.POST:
-#             registration_form = UserCreationForm(request.POST)
-#             if registration_form.is_valid():
-#                 user = registration_form.save()
-#                 auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                 messages.success(request, 'Registration successful. You are noe logged in.')
-#                 return redirect('spotify_auth')
-            
-#             else:
-#                 messages.error(request, 'Registration failed. Please check the form data.')
-            
-#         elif 'login' in request.POST:
-#             login_form = AuthenticationForm(request, request.POST)
-#             if login_form.is_valid():
-#                 user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
-#                 if user is not None:
-#                     auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                     print("User authenticated and logged in successfully.")
-#                     messages.success(request, 'Login successful.')
-#                     return redirect('spotify_auth')
-                
-#                 else:
-#                     print("User authentication failed.")
-#                     messages.error(request, 'Login failed. Invalid username or password.')
-
-#             else:
-#                 messages.error(request, 'Login failed. Invaild username or password.')
-#     else:
-#         registration_form = UserCreationForm()
-#         login_form = AuthenticationForm()
-    
-#     return render(request, 'register_or_login.html', {'registration_form': registration_form, 'login_form': login_form,})
 
 def register_page(request):
     registration_form = UserCreationForm(request.POST)

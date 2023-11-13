@@ -7,28 +7,35 @@
     <link rel="stylesheet" type="text/css" href="{% static 'account.css' %}">
 </head>
 <body>
-    <h1>My Account</h1>
-    <p>Welcome, {{ user.username }}!</p>
+    <header class="account-header">
+        <h1>My Account</h1>
+        <a class="home-button" href="{% url 'home' %}">Go back to the home page</a>
+    </header>
+    <div class="account-content">
+        <p>Welcome, {{ user.username }}!</p>
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-    <h2>Account Details</h2>
-    <p>Username: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
+        <section class="account-details">
+            <h2>Account Details</h2>
+            <p>Username: {{ user.username }}</p>
+            <p>Email: {{ user.email }}</p>
+        </section>
 
-    <h2>Change Password</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ password_change_form.as_p }}
-        <button type="submit">Change Password</button>
-    </form>
-    <a href="{% url 'home' %}">Go back to the home page</a>
+        <section class="change-password">
+            <h2>Change Password</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ password_change_form.as_p }}
+                <button type="submit">Change Password</button>
+            </form>
+        </section>
+    </div>
 </body>
 </html>
-

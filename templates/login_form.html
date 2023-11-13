@@ -6,8 +6,8 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
-<body>
-    <div class="spotify-form">
+<body class="login">
+    <div class="login-form">
         <h2>Login</h2>
         {% if messages %}
         <ul class="messages">
@@ -27,7 +27,7 @@
                 {{ login_form.password }}
             </div>
 
-            <button class="spotify-button" type="submit" name="login">Login</button>
+            <button class="login-button" type="submit" name="login">Login</button>
         </form>
     </div>
 </body>

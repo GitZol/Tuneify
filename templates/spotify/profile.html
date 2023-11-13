@@ -7,7 +7,23 @@
     <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
 </head>
 <body>
-    <h1 class="welcome-message">Welcome to Your Tuneify Profile</h1>
+    <div class="header">
+        <h1 class="welcome-message">Welcome to Your Tuneify Profile</h1>
+        <div class="burger-menu">
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul class="menu-items">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="{% url 'account' %}">Account</a></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
     <div class="container">
         <p>Hello, {{ display_name }}!</p>
         <div class="button-container">
@@ -17,19 +33,6 @@
             <button id="top-genres-button">Top Genres</button>
             <button id="recently-played-button">Recently Played</button>
             <button id="music-recommendations-button">Recommended Songs</button>
-        </div>
-        <div class="burger-menu">
-            <div class="menu-toggle">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            <ul class="menu-items">
-                <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="{% url 'logout' %}">Log Out</a></li>
-                <li><a href="{% url 'account' %}">Account</a></li>
-            </ul>
         </div>
         <div class="section" id="recently-played-list">
         <h2>Recently Played Tracks</h2>
@@ -103,11 +106,11 @@
         </div>
         <div class="section" id="top-genres-section">
             <h2>Top 10 Genres</h2>
-            <ul class="track-list">
+            <ul class="genre-list">
                 {% for genre, count in top_genres %}
-                    <li class="track-item">
+                    <li class="genre-item">
                         <strong>
-                            <span class="track-name">{{ genre }}</span>
+                            <span class="genre-name">{{ genre }}</span>
                         </strong>
                     </li>  
                 {% endfor %}
@@ -115,15 +118,20 @@
         </div>
         <div class="section" id="obscurity-section">
             <h2>Obscurity</h2>
-            <p>Your overall obscurity score is {{ obscurity_scores.1 }}.
-            </p>
+            <h3>Your overall obscurity score is {{ obscurity_scores.1 }}.
+            </h3>
             <h3>Your most obscure songs</h3>
-            <ul>
+            <div class="obscurity-list">
                 {% for score in obscurity_scores.0 %}
-                <li>{{ score.track_name }} - Obscurity Score: {{ score.obscurity_score }}
-                </li>
+                <div class="obscurity-item">
+                    <img class="track-image" src="{{ score.track_image_url }}" alt="Track Image">
+                    <div class="obscurity-info">
+                        <p class="track-name">{{ score.track_name }}</p>
+                        <p class="obscurity-score">Obscurity Score: {{ score.obscurity_score }}</p>
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     <script>
         // Function to enable smooth scrolling on hover

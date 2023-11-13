@@ -1,4 +1,9 @@
-/* Add some basic styles to the body */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -12,6 +17,8 @@ h1 {
     color: white;
     padding: 20px;
     text-align: center;
+    margin: 0;
+    font-size: 24px;
 }
 
 /* Style the main content */
@@ -31,6 +38,11 @@ h2 {
 
 /* Style the track list and artist list */
 ul.track-list, ul.artist-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.genre-list {
     list-style-type: none;
     padding: 0;
 }
@@ -55,6 +67,22 @@ ul.track-list li:hover, ul.artist-list li:hover {
 ul.track-list li strong, ul.artist-list li strong {
     font-weight: bold;
     color: #333; /* Adjust color as needed */
+}
+
+ul.genre-list li {
+    background-color: #7d6aaf;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between; /* Align content to opposite ends */
+    align-items: center; /* Center items vertically */
+}
+
+ul.genre-list li strong {
+    font-weight: bold;
+    color: #333;
 }
 
 /* Add this style for the song list container */
@@ -121,21 +149,6 @@ ul.track-list li strong, ul.artist-list li strong {
     background-color: #169845;
 }
 
-/* Style for the Obscurity button */
-#obscurity-button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#obscurity-button:hover {
-    background-color: #169845;
-}
 
 /* Style for the recommended songs section */
 #music-recommendations-list {
@@ -182,68 +195,7 @@ ul.track-list li strong, ul.artist-list li strong {
     background-color: #f5f5f5; /* Light gray on hover */
 }
 
-#top-tracks-button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
-#top-tracks-button:hover {
-    background-color: #169845;
-}
-
-#recently-played-button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#recently-played-button:hover {
-    background-color: #169845;
-}
-
-#top-artists-button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#top-artists-button:hover {
-    background-color: #169845;
-}
-
-#music-recommendations-button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#music-recommendations-button:hover {
-    background-color: #169845;
-}
-
-
-/* Style for the top navigation buttons */
 .button-container {
     display: flex;
     justify-content: space-between;
@@ -251,14 +203,14 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 .button-container button {
-    background-color: #1DB954;
+    background-color: #1DB954; /* Use a neutral color */
     color: #fff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s; /* Add color transition */
     flex: 1;
     margin-right: 10px; /* Add some spacing between buttons */
 }
@@ -268,7 +220,8 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 .button-container button:hover {
-    background-color: #169845;
+    background-color: #a9e5ac; /* Darken the background on hover */
+    color: #fff; /* Adjust text color on hover */
 }
 
 .artist-name {
@@ -277,6 +230,12 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 .track-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.genre-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -299,44 +258,78 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 #obscurity-section {
-    background-color: #f5f5f5;
+    background-color: #191919;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
+    margin-top: 20px;
+    text-align: center;
 }
 
 #obscurity-section h2 {
     font-size: 24px;
     margin-bottom: 10px;
+    color: #fff;
 }
 
 #obscurity-section p {
     font-size: 16px;
     margin-bottom: 20px;
+    color: #191919;
 }
 
-#obscurity-section ul {
-    list-style: none;
-    padding: 0;
+#obscurity-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #fff;
 }
 
-#obscurity-section li {
-    margin-bottom: 5px;
-    font-size: 14px;
+.obscurity-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-#obscurity-section li::before {
-    content: "\2022";
-    color: #ff6600;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-    padding-right: 0.5em;
+.obscurity-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: left;
 }
+
+.track-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.obscurity-info {
+    color: #333;
+}
+
+.track-name {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.genre-name {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.obscurity-score {
+    font-size: 16px;
+    color: #888;
+}
+
 
 #top-genres-section {
-    background-color: #f5f5f5;
+    background-color: #ad96dc;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -352,7 +345,7 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 #top-tracks-section {
-    background-color: #f5f5f5;
+    background-color: #f4a59d;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -360,7 +353,7 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 #recently-played-list {
-    background-color: #f5f5f5;
+    background-color: #759398;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -368,7 +361,7 @@ ul.track-list li strong, ul.artist-list li strong {
 }
 
 #music-recommendations-list {
-    background-color: #f5f5f5;
+    background-color: #a9e5ac;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -422,91 +415,101 @@ ul.track-list li strong, ul.artist-list li strong {
     text-decoration: none;
 }
 
-/* Style each section individually */
-.section-1 {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-.section-2 {
-    background-color: #e6e6e6;
-    color: #333;
-}
-
-.section-3 {
-    background-color: #d9d9d9;
-    color: #333;
-}
-
-.section-4 {
-    background-color: #ccc;
-    color: #333;
-}
-
 .album-cover {
     margin-right: 10px;
     border-radius: 5px;
     
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1DB954;
+    color: #ECF0F1;
+    padding: 20px;
+}
+
 .burger-menu {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
-    cursor: pointer;
 }
 
 .menu-toggle {
-    width: 30px;
-    height: 3px;
-    background: #333;
-    margin: 5px 0;
-    transition: 0.4s;
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
 }
 
-.menu-toggle.active {
-    background: transparent;
+.bar {
+    width: 30px;
+    height: 4px;
+    background-color: #121212;
+    margin: 4px 0;
+    transition: background-color 0.3s;
 }
 
 .menu-items {
     list-style: none;
     padding: 0;
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: #fff;
-    border: 1px solid #ddd;
+    margin: 0;
+    right: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: none;
+    position: fixed;
+}
+
+.menu-items li a {
+    text-decoration: none;
+    color: #121212;
+    display: block;
+    padding: 10px 20px;
+
 }
 
 .menu-items.active {
     display: block;
 }
 
-.menu-items li {
-    padding: 10px;
+.burger-menu .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
 }
 
-.menu-items li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
+.burger-menu .menu-toggle .bar {
+    width: 30px;
+    height: 4px;
+    background-color: #121212;
+    margin: 4px 0;
+    transition: background-color 0.3s, transform 0.3s; /* Add a transform transition */
 }
 
-.menu-items li a:hover {
-    background: #eee;
+.burger-menu .menu-toggle.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px); /* Transform the first bar to create an X */
+}
+
+.burger-menu .menu-toggle.active .bar:nth-child(2) {
+    opacity: 0; /* Hide the second bar when active */
+}
+
+.burger-menu .menu-toggle.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px); /* Transform the third bar to create an X */
 }
 
 .welcome-message {
     background-color: #1DB954;
     color: white;
-    padding: 20px;
+    padding: 10px 20px;
     text-align: center;
     font-size: 24px; /* Increase or decrease the font size as desired */
     margin: 0; /* Remove any default margin */
+    margin-top: 10px;
+    flex: auto;
 }
 
 .welcome-message p {

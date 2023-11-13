@@ -6,17 +6,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body class="home">
-    <h1>Welcome to the Homepage</h1>
-    <p>This is your homepage. You can navigate to different sections of the website using the buttons below:</p>
+    <div class="homepage-content">
+        <div class="header">
+            <h1 class="title">Tuneify</h1>
+        </div>
+        <div class="description">
+            <p>Discover Your Musical Kin</p>
+        </div>
+        <div class="buttons">
+            <!-- Button to go to the Spotify authentication page -->
+            <a href="{% url 'spotify_auth' %}" class="btn btn-primary">Authenticate with Spotify</a>
 
-    <!-- Button to go to the Spotify authentication page -->
-    <a href="{% url 'spotify_auth' %}" class="btn btn-primary">Authenticate with Spotify</a>
-
-    <!-- Button to go to the user's profile page -->
-    <a href="{% url 'spotify_profile' %}" class="btn btn-success">My Spotify Profile</a>
-
-    <!-- Button to view listening history -->
-    <a href="{% url 'check_similarity' %}" class="btn btn-info">Check Similarity</a>
-
+            <!-- Button to go to the user's profile page -->
+            <a href="{% url 'spotify_profile' %}" class="btn btn-success">My Spotify Profile</a>
+        </div>
+    </div>
 </body>
 </html>

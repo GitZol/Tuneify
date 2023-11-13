@@ -1,96 +1,62 @@
-/* Style the container for the listening history */
-#listening-history-data {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #f7f7f7;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
 /* Style the list of items */
 ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
-
-/* Style each item in the list */
-li {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 5px;
-}
-
-/* Style links within the items */
-li a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-/* Style links on hover */
-li a:hover {
-    text-decoration: underline;
-}
-
-body {
+body.registration {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f2f2f2;
 }
 
-h2 {
-    color: #333;
-}
-
-.spotify-form {
+.registration-form {
     max-width: 300px;
     margin: 0 auto;
     padding: 20px;
     background-color: #1a6062;
-    color: #1DB954;
+    color: #121212;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
-.spotify-form h2 {
+.registration-form h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    color: #121212; /* Title color */
 }
 
-.spotify-form .form-group {
+.registration-form .form-group {
     margin-bottom: 15px;
     text-align: left;
     padding-left: 10px;
     padding-right: 30px;
-    
 }
 
-.spotify-form label {
+.registration-form label {
     display: block;
     font-size: 14px;
     margin-bottom: 5px;
+    color: #121212; /* Label color */
 }
 
-.spotify-form input[type="text"],
-.spotify-form input[type="password"] {
+.registration-form input[type="text"],
+.registration-form input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #1DB954;
+    border: 1px solid #121212;
     border-radius: 5px;
-    background-color: #121212;
-    color: #1DB954;
+    background-color: #fff;
+    color: #121212;
     font-size: 14px;
 }
 
-.spotify-form button.spotify-button {
+.registration-form button.registration-button {
     width: 100%;
     padding: 10px;
-    background-color: #1DB954;
-    color: #191414;
+    background-color: #121212;
+    color: #fff; /* Button text color */
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -98,42 +64,113 @@ h2 {
     transition: background-color 0.3s;
 }
 
-.spotify-form button.spotify-button:hover {
-    background-color: #0E864A;
+.registration-form button.registration-button:hover {
+    background-color: #c7dbce;
+    color: #121212; /* Button text color on hover */
+}
+
+body.login {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+.login-form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1a6062;
+    color: #121212;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.login-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #121212; /* Title color */
+}
+
+.login-form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 30px;
+}
+
+.login-form label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #121212; /* Label color */
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #121212;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #121212;
+    font-size: 14px;
+}
+
+.login-form button.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #121212;
+    color: #fff; /* Button text color */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-form button.login-button:hover {
+    background-color: #c7dbce;
+    color: #121212; /* Button text color on hover */
 }
 
 /* Style the container for the homepage */
-#homepage-container {
+.homepage-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1DB954;
+    color: #fff;
     font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    background-color: #333;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
-/* Style the heading */
-h1 {
-    color: #1DB954;
-    font-size: 36px;
+/* Style the title */
+.title {
+    font-size: 4em; /* Adjust the font size as needed */
     margin-bottom: 20px;
 }
 
 /* Style the introductory paragraph */
-p {
-    color: #fff;
-    font-size: 18px;
+.description {
+    font-size: 1.5em; /* Adjust the font size as needed */
     margin-bottom: 20px;
 }
 
 /* Style the buttons */
+.buttons {
+    margin-top: 20px;
+}
+
 .btn {
     display: inline-block;
     padding: 10px 20px;
     margin: 10px;
     text-decoration: none;
     color: #fff;
-    background-color: #1DB954;
+    background-color: #121212; /* Dark background color */
     border: none;
     border-radius: 5px;
     font-size: 18px;
@@ -142,23 +179,6 @@ p {
 }
 
 .btn:hover {
-    background-color: #0E864A;
-}
-
-/* Additional button styles can be added as needed */
-
-/* Style the homepage content */
-#homepage-content {
-    text-align: center;
-}
-
-/* Style the footer */
-#footer {
-    color: #fff;
-    font-size: 14px;
-    margin-top: 20px;
-}
-
-.home {
-    background-color: #647155;
+    background-color: #c7dbce; /* Highlight color on hover */
+    color: #121212;
 }

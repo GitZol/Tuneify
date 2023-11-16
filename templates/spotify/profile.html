@@ -3,18 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Profile</title>
     <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
 </head>
 <body>
     <div class="header">
-        <h1 class="welcome-message">Welcome to Your Tuneify Profile</h1>
-        <div class="burger-menu">
-            <div class="menu-toggle">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
+        <div class="profile-pic" onclick="toggleProfileMenu()">
+            <img src="{{ profile_picture_url }}" alt="Profile Picture">
+            <span class="menu-text">Menu</span>
+        </div> 
+        <div class="menu-toggle">
             <ul class="menu-items">
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
@@ -23,9 +23,10 @@
                 <li><a href="{% url 'logout' %}">Log Out</a></li>
             </ul>
         </div>
+        <h1 class="welcome-message">Welcome to Tuneify</h1>
     </div>
     <div class="container">
-        <p>Hello, {{ display_name }}!</p>
+        <p class="greeting">Hi, {{ display_name }}.</p>
         <div class="button-container">
             <button id="obscurity-button">Obscurity</button>
             <button id="top-tracks-button">Top Tracks</button>
@@ -134,6 +135,12 @@
             </div>
         </div>
     <script>
+
+        function toggleProfileMenu() {
+            const menuItems = document.querySelector('.menu-items');
+            menuItems.classList.toggle('active');
+        }
+
         // Function to enable smooth scrolling on hover
         function enableSmoothScroll() {
             const songList = document.querySelector('.song-list-container');
@@ -209,6 +216,16 @@
         });
     
         toggleSection('obscurity-section');
+
+        document.addEventListener('click', function(event) {
+            const menuItems = document.querySelector('.menu-items');
+            const profilePic = document.querySelector('.profile-pic');
+            const clickedElement = event.target;
+
+            if (!menuItems.contains(clickedElement) && !profilePic.contains(clickedElement)) {
+                menuItems.classList.remove('active');
+            }
+        });
 
     </script>    
      

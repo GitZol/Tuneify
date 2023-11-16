@@ -68,6 +68,7 @@ def spotify_profile(request):
         current_user = sp.current_user()
         display_name = current_user['display_name']
         user_id = current_user['id']
+        profile_picture_url = current_user['images'][0]['url'] if 'images' in current_user and current_user['images'] else None
         recently_played_tracks = sp.current_user_recently_played(limit=50)
         top_artists = sp.current_user_top_artists(limit=10)
 
@@ -129,6 +130,7 @@ def spotify_profile(request):
 
         context = {
             'display_name': display_name,
+            'profile_picture_url': profile_picture_url,
             'recently_played_tracks': unique_recently_played_tracks,
             'top_artists': top_artists_with_images,
             'recommended_tracks': recommended_tracks,

@@ -11,7 +11,7 @@ body {
     padding: 0;
 }
 
-/* Style the header */
+
 h1 {
     background-color: #1DB954;
     color: white;
@@ -21,14 +21,15 @@ h1 {
     font-size: 24px;
 }
 
-/* Style the main content */
+
 .container {
-    max-width: 800px;
+    max-width: 90%;
     margin: 20px auto;
     padding: 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 h2 {
@@ -36,15 +37,15 @@ h2 {
     margin-top: 20px;
 }
 
-/* Style the track list and artist list */
+
 ul.track-list, ul.artist-list {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
 }
 
 ul.genre-list {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
 }
 
 ul.track-list li, ul.artist-list li {
@@ -55,18 +56,18 @@ ul.track-list li, ul.artist-list li {
     border-radius: 5px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between; /* Align content to opposite ends */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between; 
+    align-items: center; 
 }
 
 ul.track-list li:hover, ul.artist-list li:hover {
     background-color: #f5f5f5;
 }
 
-/* Style the track name and artist name */
+
 ul.track-list li strong, ul.artist-list li strong {
     font-weight: bold;
-    color: #333; /* Adjust color as needed */
+    color: #333; 
 }
 
 ul.genre-list li {
@@ -76,8 +77,8 @@ ul.genre-list li {
     border-radius: 5px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between; /* Align content to opposite ends */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between; 
+    align-items: center; 
 }
 
 ul.genre-list li strong {
@@ -85,14 +86,14 @@ ul.genre-list li strong {
     color: #333;
 }
 
-/* Add this style for the song list container */
+
 .song-list-container {
-    max-height: 300px; /* Adjust the height as needed */
+    max-height: 300px; 
     overflow: hidden;
     position: relative;
 }
 
-/* Style the song list to make it scrollable on hover */
+
 .scrollable {
     overflow-y: hidden;
 }
@@ -104,17 +105,17 @@ ul.genre-list li strong {
 .scrollable:hover {
     overflow-y: scroll;
 }
-/* Add this style for the recommendation list */
+
 .recommendation-list {
     list-style: none;
     padding: 0;
-    margin: 0; /* Remove any default margin */
+    margin: 0; 
     overflow: hidden;
     position: relative;
 }
 
 .recommendation-list li {
-    background-color: #fff; /* Background color for list items */
+    background-color: #fff; 
     border: 1px solid #ddd;
     margin: 10px 0;
     padding: 10px;
@@ -123,14 +124,13 @@ ul.genre-list li strong {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s; /* Smooth hover effect */
+    transition: background-color 0.3s; 
 }
 
 .recommendation-list li:hover {
-    background-color: #f5f5f5; /* Light gray on hover */
+    background-color: #f5f5f5; 
 }
 
-/* Style for the create playlist button (unchanged) */
 .create-playlist-button {
     background-color: #1db954;
     color: #fff;
@@ -150,9 +150,8 @@ ul.genre-list li strong {
 }
 
 
-/* Style for the recommended songs section */
 #music-recommendations-list {
-    display: none; /* Hide the section by default */
+    display: none; 
 }
 
 #music-recommendations-list h2 {
@@ -160,9 +159,8 @@ ul.genre-list li strong {
     margin-top: 20px;
 }
 
-/* Style for the recommended songs list */
 #music-recommendations-list .scrollable-list {
-    max-height: 500px; /* Adjust the height as needed */
+    max-height: 500px; 
     overflow: hidden;
     position: relative;
 }
@@ -171,15 +169,14 @@ ul.genre-list li strong {
     overflow-y: scroll;
 }
 
-/* Style for recommended songs list items */
 #music-recommendations-list .recommendation-list {
     list-style: none;
     padding: 0;
-    margin: 0; /* Remove any default margin */
+    margin: 0; 
 }
 
 #music-recommendations-list .recommendation-list li {
-    background-color: #fff; /* Background color for list items */
+    background-color: #fff; 
     border: 1px solid #ddd;
     margin: 10px 0;
     padding: 10px;
@@ -188,41 +185,50 @@ ul.genre-list li strong {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s; /* Smooth hover effect */
+    transition: background-color 0.3s; 
 }
 
 #music-recommendations-list .recommendation-list li:hover {
-    background-color: #f5f5f5; /* Light gray on hover */
+    background-color: #f5f5f5; 
 }
 
 
 .button-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 20px;
 }
 
 .button-container button {
-    background-color: #1DB954; /* Use a neutral color */
+    background-color: #1DB954; 
     color: #fff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Add color transition */
+    transition: background-color 0.3s, color 0.3s;
     flex: 1;
-    margin-right: 10px; /* Add some spacing between buttons */
+    margin-right: 10px; 
+    margin-bottom: 10px;
+    width: calc(33.33% - 10px);
 }
 
+
 .button-container button:last-child {
-    margin-right: 0; /* Remove margin from the last button */
+    margin-right: 0; 
 }
 
 .button-container button:hover {
-    background-color: #a9e5ac; /* Darken the background on hover */
-    color: #fff; /* Adjust text color on hover */
+    background-color: #a9e5ac; 
+    color: #fff; 
 }
+
+.button-container button.active {
+    background-color: #169845;
+}
+
 
 .artist-name {
     font-weight: normal;
@@ -330,7 +336,7 @@ ul.genre-list li strong {
 
 #top-genres-section {
     background-color: #ad96dc;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
@@ -338,7 +344,7 @@ ul.genre-list li strong {
 
 #top-artists-section {
     background-color: #f5f5f5;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
@@ -346,7 +352,7 @@ ul.genre-list li strong {
 
 #top-tracks-section {
     background-color: #f4a59d;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
@@ -354,7 +360,7 @@ ul.genre-list li strong {
 
 #recently-played-list {
     background-color: #759398;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
@@ -362,15 +368,12 @@ ul.genre-list li strong {
 
 #music-recommendations-list {
     background-color: #a9e5ac;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
 }
 
-/* Add this to your styles.css or create a new CSS file */
-
-/* Overall styling for the profile container */
 .profile-container {
     display: flex;
     flex-direction: column;
@@ -379,7 +382,6 @@ ul.genre-list li strong {
     padding: 20px;
 }
 
-/* Style your profile sections */
 .profile-section {
     width: 100%;
     padding: 50px;
@@ -389,7 +391,6 @@ ul.genre-list li strong {
     margin: 20px 0;
 }
 
-/* Style your navigation bar */
 .profile-navigation {
     position: fixed;
     top: 0;
@@ -430,6 +431,35 @@ ul.genre-list li strong {
     padding: 20px;
 }
 
+.greeting {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    cursor: pointer;
+    position: absolute;
+    right: 70px;
+}
+
+.profile-pic img {
+    border-radius: 50%;
+    max-width: 50px;
+    max-height: 50px;
+    object-fit: cover;
+}
+
+.menu-text {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    margin-left: 30px;
+    font-weight: bold;
+}
+
 .burger-menu {
     position: absolute;
     top: 20px;
@@ -442,13 +472,6 @@ ul.genre-list li strong {
     cursor: pointer;
 }
 
-.bar {
-    width: 30px;
-    height: 4px;
-    background-color: #121212;
-    margin: 4px 0;
-    transition: background-color 0.3s;
-}
 
 .menu-items {
     list-style: none;
@@ -472,53 +495,41 @@ ul.genre-list li strong {
 
 .menu-items.active {
     display: block;
+    top: 70px;
+    right: 50px;
 }
 
-.burger-menu .menu-toggle {
+.menu-items li:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.profile-pic .menu-toggle {
     display: flex;
     flex-direction: column;
     cursor: pointer;
     position: relative;
 }
 
-.burger-menu .menu-toggle .bar {
-    width: 30px;
-    height: 4px;
-    background-color: #121212;
-    margin: 4px 0;
-    transition: background-color 0.3s, transform 0.3s; /* Add a transform transition */
-}
-
-.burger-menu .menu-toggle.active .bar:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px); /* Transform the first bar to create an X */
-}
-
-.burger-menu .menu-toggle.active .bar:nth-child(2) {
-    opacity: 0; /* Hide the second bar when active */
-}
-
-.burger-menu .menu-toggle.active .bar:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px); /* Transform the third bar to create an X */
-}
 
 .welcome-message {
     background-color: #1DB954;
     color: white;
     padding: 10px 20px;
     text-align: center;
-    font-size: 24px; /* Increase or decrease the font size as desired */
-    margin: 0; /* Remove any default margin */
+    font-size: 36px; 
+    margin: 0; 
     margin-top: 10px;
     flex: auto;
 }
 
 .welcome-message p {
-    font-size: 18px; /* You can adjust the font size for the user's name */
-    margin: 10px 0; /* Add some spacing between the welcome message and the user's name */
+    font-size: 18px; 
+    margin: 10px 0; 
 }
 
 .spotify-link {
-    background-color: #c0cdc4; /* Spotify green color */
+    background-color: #c0cdc4; 
     color: black;
     border: none;
     padding: 10px 20px;
@@ -526,14 +537,84 @@ ul.genre-list li strong {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    text-decoration: none; /* Remove the underline from links */
-    display: inline-block; /* Make the link a block element for better styling */
+    text-decoration: none;
+    display: inline-block;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+    width: auto;
 }
 
 .spotify-link:hover {
-    background-color: #169845; /* Slightly darker green on hover */
+    background-color: #169845;
 }
 
 .spotify-link:focus {
-    outline: none; /* Remove the default focus outline for a cleaner look */
+    outline: none;
+}
+
+
+@media (max-width: 768) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .button-container button {
+        width: calc(50% - 10px);
+    }
+
+    .profile-pic {
+        right: 10px;
+        top: 20px;
+    }
+
+    #recently-played-list {
+        padding: 15px;
+    }
+
+    #music-recommendations-list {
+        padding: 15px;
+    }
+    
+    .menu-text {
+        display: none;
+    }
+
+    .spotify-link {
+        bottom: 5px;
+        right: 5px;
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .button-container button {
+        width: calc(100% - 10px);
+    }
+
+    .profile-pic {
+        right: 10px;
+    }
+
+    #recently-played-list {
+        padding: 10px;
+    }
+
+    #music-recommendations-list {
+        padding: 10px;
+    }
+
 }

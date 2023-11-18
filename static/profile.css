@@ -554,7 +554,7 @@ ul.genre-list li strong {
 }
 
 
-@media (max-width: 768) {
+@media (max-width: 768px) {
     h1 {
         font-size: 20px;
     }

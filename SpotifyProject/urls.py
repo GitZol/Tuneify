@@ -33,11 +33,11 @@ urlpatterns = [
     path('check_similarity/', views.check_similarity, name='check_similarity'),
     path('profile/', views.profile_view, name='profile'),
     path('create_and_add_playlist/', views.create_and_add_playlist, name='create_and_add_playlist'),
-    # path('register_or_login/', views.register_or_login, name='register_or_login'),
     path('register/', views.register_page, name='register_page'),
     path('login/', views.login_page, name='login_page'),
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('account/', views.account, name='account'),
+    path('about/', views.about, name='about'),
 ]
 
 if settings.DEBUG:

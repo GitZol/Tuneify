@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Tuneify</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'about.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="profile-pic" onclick="toggleProfileMenu()">
+            <img src="{{ profile_picture_url }}" alt="Profile Picture">
+            <span class="menu-text">Menu</span>
+        </div>
+        <div class="menu-toggle">
+            <ul class="menu-items">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="{% url 'account' %}">Account</a></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+            </ul>
+        </div>
+        <h1 class="welcome-message">Welcome to Tuneify</h1>
+    </div>
+
+    <div class="container">
+        <div class="section" id="about">
+            <h2>About Tuneify</h2>
+            <p>
+                Tuneify, a personal project created by a passionate student, is designed to help you delve deeper into your music preferences. 
+                By analyzing your listening history, Tuneify provides insights into your recent song obscurity, top artists, tracks, and genres. 
+                Additionally, it suggests recommended songs to enhance your music exploration.
+            </p>
+            <h3>How It Works</h3>
+            <p>
+                Tuneify analyzes your listening history from Spotify and presents detailed data to help you understand your musical inclinations better.
+            </p>
+            <h3>Contact Me</h3>
+            <p>
+                Have any questions or suggestions? Feel free to reach out on my personal social media:
+            </p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/_mo.26_/" class="social-icon" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static 'instagram_icon.png' %}" alt="Instagram Icon">
+                </a>
+                <a href="https://www.linkedin.com/in/mohamed-hassan26/" class="social-icon" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static 'linkedin_icon.png' %}" alt="LinkedIn Icon">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleProfileMenu() {
+            const menuItems = document.querySelector('.menu-items');
+            menuItems.classList.toggle('active');
+        }
+
+
+        document.addEventListener('click', function(event) {
+            const menuItems = document.querySelector('.menu-items');
+            const profilePic = document.querySelector('.profile-pic');
+            const clickedElement = event.target;
+
+            if (!menuItems.contains(clickedElement) && !profilePic.contains(clickedElement)) {
+                menuItems.classList.remove('active');
+            }
+        });
+
+    </script>
+</body>
+</html>

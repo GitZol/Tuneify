@@ -270,6 +270,31 @@ def home(request):
     }
     return render(request, 'spotify/home.html', context)
 
+def about(request):
+    access_token = request.session.get('spotify_access_token')
+
+    if not access_token:
+        messages.error(request, 'Spotify access token not found. Please authenticate with Spotify first.')
+        return redirect('spotify_auth')
+    
+    try:
+        sp = spotipy.Spotify(auth=access_token)
+        current_user = sp.current_user()
+        profile_picture_url = current_user['images'][0]['url'] if 'images' in current_user and current_user['images'] else None
+
+        context = {
+            'profile_picture_url': profile_picture_url,
+            }
+        
+    except SpotifyException as e:
+        messages.error(request, f'Spotify API error: {e}')
+        return redirect('home')
+    except Exception as e:
+        messages.error(request, f'An error occurred: {e}')
+        return redirect('home')
+    
+    return render(request, 'spotify/about.html', context)
+
 def preprocess_listening_history(request):
     # get the listening history from the db
     user = request.user.userprofile
@@ -515,6 +540,24 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def account(request):
+    access_token = request.session.get('spotify_access_token')
+
+    if not access_token:
+        messages.error(request, 'Spotify access token not found. Please authenticate with Spotify first.')
+        return redirect('spotify_auth')
+    
+    try:
+        sp = spotipy.Spotify(auth=access_token)
+        current_user = sp.current_user()
+        profile_picture_url = current_user['images'][0]['url'] if 'images' in current_user and current_user['images'] else None
+
+    except SpotifyException as e:
+        messages.error(request, f'Spotify API error: {e}')
+        return redirect('home')
+    except Exception as e:
+        messages.error(request, f'An error occurred: {e}')
+        return redirect('home')
+
     password_change_form = PasswordChangeForm(request.user)
     if request.method == "POST":
         password_change_form = PasswordChangeForm(request.user)
@@ -528,4 +571,4 @@ def account(request):
     else:
         password_change_form = PasswordChangeForm(request.user)
 
-    return render(request, 'spotify/account.html', {'user': request.user, 'password_change_form' : password_change_form})
+    return render(request, 'spotify/account.html', {'user': request.user, 'password_change_form' : password_change_form, 'profile_picture_url': profile_picture_url})

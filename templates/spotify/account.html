@@ -7,10 +7,22 @@
     <link rel="stylesheet" type="text/css" href="{% static 'account.css' %}">
 </head>
 <body>
-    <header class="account-header">
+    <div class="account-header">
+        <div class="profile-pic" onclick="toggleProfileMenu()">
+            <img src="{{ profile_picture_url }}" alt="Profile Picture">
+            <span class="menu-text">Menu</span>
+        </div> 
+        <div class="menu-toggle">
+            <ul class="menu-items">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'account' %}">Account</a></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+            </ul>
+        </div>
         <h1>My Account</h1>
-        <a class="home-button" href="{% url 'home' %}">Go back to the home page</a>
-    </header>
+    </div>
     <div class="account-content">
         <p>Welcome, {{ user.username }}!</p>
 
@@ -37,5 +49,22 @@
             </form>
         </section>
     </div>
+
+    <script>
+        function toggleProfileMenu() {
+            const menuItems = document.querySelector('.menu-items');
+            menuItems.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const menuItems = document.querySelector('.menu-items');
+            const profilePic = document.querySelector('.profile-pic');
+            const clickedElement = event.target;
+
+            if (!menuItems.contains(clickedElement) && !profilePic.contains(clickedElement)) {
+                menuItems.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

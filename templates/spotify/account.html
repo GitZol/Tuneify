@@ -15,7 +15,7 @@
         <div class="menu-toggle">
             <ul class="menu-items">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'spotify_profile' %}">Profile</a></li>
+                <li><a href="{% url 'tuneify_profile' %}">Profile</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'account' %}">Account</a></li>
                 <li><a href="{% url 'logout' %}">Log Out</a></li>
@@ -25,7 +25,6 @@
     </div>
     <div class="account-content">
         <p>Welcome, {{ user.username }}!</p>
-
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -33,7 +32,6 @@
                 {% endfor %}
             </ul>
         {% endif %}
-
         <section class="account-details">
             <h2>Account Details</h2>
             <p>Username: {{ user.username }}</p>

@@ -56,7 +56,7 @@ def spotify_auth(request):
     
 
 @login_required(login_url='login_page')
-def spotify_profile(request):
+def tuneify_profile(request):
     access_token = request.session.get('spotify_access_token')
 
     if not access_token:
@@ -84,7 +84,7 @@ def spotify_profile(request):
                 create_and_add_playlist(access_token, user_id, playlist_name, [track['uri'] for track in recommended_tracks])
                 messages.success(request, 'Playlist created successfully!')
 
-                return HttpResponseRedirect(reverse('spotify_profile'))
+                return HttpResponseRedirect(reverse('tuneify_profile'))
 
         top_tracks = sp.current_user_top_tracks(limit=10)
         top_genres = get_top_genres(request)
@@ -508,10 +508,15 @@ def register_page(request):
         if registration_form.is_valid():
             user = registration_form.save()
             auth_login(request, user)
-            print("user regitered")
-            return redirect('spotify_profile')
+            messages.success(request, f'Account created.')
+            return redirect('tuneify_profile')
         else:
-            print("user not registered")
+            if len(request.POST['username']) < 3:
+                messages.error(request, 'Username must be at least 3 characters long.')
+            if len(request.POST['password1']) < 8:
+                messages.error(request, 'Password must be at least 8 characters long.')
+            if request.POST['password1'] != request.POST['password2']:
+                messages.error(request, 'Passwords do not match.')
         
     return render(request, 'registration_form.html', {'registration_form': registration_form})
     
@@ -524,10 +529,9 @@ def login_page(request):
         if login_form.is_valid():
             user = login_form.get_user()
             auth_login(request, user)
-            print("user is valid")
-            return redirect('spotify_profile')
+            return redirect('tuneify_profile')
         else:
-            print("user not valid")
+            messages.error(request, 'Invalid username or password.')
     return render(request, 'login_form.html', {'login_form': login_form})
 
 class CustomLogoutView(LogoutView):

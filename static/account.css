@@ -112,6 +112,8 @@ p {
 
 .account-details h2 {
     margin-bottom: 10px;
+    padding: 10px;
+    text-align: center;
 }
 
 .account-details p {
@@ -125,6 +127,8 @@ p {
 
 .change-password h2 {
     margin-bottom: 10px;
+    padding: 10px;
+    text-align: center;
 }
 
 /* Style form inputs and labels */
@@ -149,7 +153,6 @@ form button:hover {
     background-color: #555;
 }
 
-/* Style the messages */
 .messages {
     list-style-type: none;
     padding: 0;

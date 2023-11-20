@@ -7,16 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body class="registration">
+    <header class="tuneify">
+        <h1>Tuneify</h1>
+    </header>
     <div class="registration-form">
         <h2>Register</h2>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -31,7 +26,13 @@
                 <label for="id_password2">Confirm Password:</label>
                 {{ registration_form.password2 }}
             </div>
-
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <button class="registration-button" type="submit" name="register">Register</button>
         </form>
 

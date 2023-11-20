@@ -7,15 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body class="login">
+    <header class="tuneify">
+        <h1>Tuneify</h1>
+    </header>
     <div class="login-form">
         <h2>Login</h2>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -26,9 +22,17 @@
                 <label for="id_password">Password:</label>
                 {{ login_form.password }}
             </div>
-
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <button class="login-button" type="submit" name="login">Login</button>
         </form>
+
+        <p>Don't have an account? <a class="register-link" href="{% url 'register_page' %}">Register</a></p>
     </div>
 </body>
 </html>

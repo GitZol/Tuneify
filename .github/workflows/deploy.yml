@@ -33,7 +33,7 @@ jobs:
       - name: Create virtual environment
         run: |
           python -m venv myenv
-          source myenv/Scripts/activate
+          source myenv/bin/activate
           
       - name: Install dependencies
         run: |

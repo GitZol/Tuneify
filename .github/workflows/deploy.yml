@@ -47,4 +47,4 @@ jobs:
         run: python manage.py collectstatic --no-input
 
       - name: Start Django app
-        run: gunicorn myproject.wsgi:application
+        run: source myenv/bin/activate && gunicorn TuneifyProject.wsgi:application

@@ -17,7 +17,6 @@ defusedxml==0.7.1
 distro==1.4.0
 Django==4.2.5
 django-allauth==0.56.1
-duplicity==0.8.12.0
 entrypoints==0.3
 fasteners==0.14.1
 fonttools==4.43.0

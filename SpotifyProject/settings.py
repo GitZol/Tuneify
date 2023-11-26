@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tuneify.me','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['tuneify.me', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SpotifyProject.wsgi.application'
+WSGI_APPLICATION = 'Tuneify.wsgi.application'
 
 
 # Database

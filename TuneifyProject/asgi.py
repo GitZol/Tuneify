@@ -1,5 +1,5 @@
 """
-ASGI config for SpotifyProject project.
+ASGI config for TuneifyProject project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SpotifyProject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TuneifyProject.settings')
 
 application = get_asgi_application()

@@ -15,7 +15,6 @@ cycler==0.12.0
 dbus-python==1.2.16
 defusedxml==0.7.1
 distro==1.4.0
-distro-info==0.23+ubuntu1.1
 Django==4.2.5
 django-allauth==0.56.1
 duplicity==0.8.12.0

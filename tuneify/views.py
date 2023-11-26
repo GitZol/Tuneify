@@ -20,11 +20,6 @@ import requests
 import spotipy.util as util
 from collections import Counter 
 import json
-from social_django.views import auth as social_auth
-from social_core.backends.oauth import BaseOAuth2
-from social_django.utils import psa
-import googleapiclient.discovery
-from googleapiclient.errors import HttpError
 from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required

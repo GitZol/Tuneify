@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8gd3ua97n745@3tq-h*^ar6rf7i9#+@k9=k*@87yeqt#08#g^a'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tuneify.me','127.0.0.1','localhost']
 
 
 # Application definition
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tuneify',
-    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -133,9 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SPOTIPY_CLIENT_ID = 'c9341baf78624ba987043a8966bb724b'
-SPOTIPY_CLIENT_SECRET = '9feb6c5393374b0d9bea14dc391ecccb'
-SPOTIPY_REDIRECT_URL = 'http://localhost:8080/spotify_callback/'
+SPOTIPY_CLIENT_ID = config('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = config('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URL = config('SPOTIPY_REDIRECT_URL')
 
 
 LOGIN_REDIRECT_URL = 'tuneify_profile'

@@ -2,3 +2,4 @@ Django==4.2.7
 gunicorn==21.2.0
 spotipy==2.23.0
 requests==2.26.0
+python-decouple==3.8

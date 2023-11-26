@@ -143,7 +143,7 @@ def tuneify_profile(request):
     
     return render(request, 'spotify/profile.html', context)
 
-from SpotifyProject import settings as st
+from TuneifyProject import settings as st
 def spotify_authroize(request):
     authorization_url = 'https://accounts.spotify.com/authrorize'
     redirect_uri = request.build_absolute_uri(reverse('spotify_callback'))

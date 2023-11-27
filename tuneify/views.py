@@ -263,7 +263,7 @@ def home(request):
     context = {
         'recently_played_tracks' : listening_history, 
     }
-    return render(request, 'spotify/index.html', context)
+    return render(request, 'index.html', context)
 
 def about(request):
     access_token = request.session.get('spotify_access_token')
